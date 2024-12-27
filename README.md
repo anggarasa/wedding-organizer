@@ -14,7 +14,7 @@ Yayah Make Up adalah sebuah website wedding organizer yang menyediakan berbagai 
   Fitur untuk memilih gaun sesuai kebutuhan acara akad dan resepsi, dengan batasan pilihan yang disesuaikan per paket.
 
 - **Integrasi Pembayaran**: 
-  Menggunakan Midtrans untuk sistem pembayaran, dengan opsi pembayaran penuh atau uang muka (50%).
+  Menggunakan Midtrans untuk sistem pembayaran, dengan opsi pembayaran penuh.
 
 - **Diskon Otomatis**: 
   Sistem diskon otomatis berdasarkan tanggal yang diatur pada database.
@@ -25,20 +25,20 @@ Yayah Make Up adalah sebuah website wedding organizer yang menyediakan berbagai 
 - **Frontend**: TailwindCSS, Alpine.js
 - **Database**: MySQL
 - **Payment Gateway**: Midtrans
-- **Rich Text Editor**: Laravel Trix
+- **Rich Text Editor**: Quill Editor
 
 ## Instalasi dan Penggunaan
 
 1. Clone repositori ini ke dalam folder lokal Anda:
 
    ```bash
-   git clone https://github.com/username/yayah-make-up.git
+   git clone https://github.com/anggarasa/wedding-organizer.git
    ```
 
 2. Masuk ke folder proyek:
 
    ```bash
-   cd yayah-make-up
+   cd wedding-organizer
    ```
 
 3. Install semua dependensi menggunakan Composer:
@@ -73,6 +73,6 @@ Yayah Make Up adalah sebuah website wedding organizer yang menyediakan berbagai 
 
 8. Akses website di browser Anda melalui alamat [http://localhost:8000](http://localhost:8000).
 
-## Screenshot
+## Logo
 
-![Tampilan Utama Website](https://raw.githubusercontent.com/anggarasa/wedding-organizer/refs/heads/main/public/imgs/logo/readme-photo.png)
+![Logo Website](https://raw.githubusercontent.com/anggarasa/wedding-organizer/refs/heads/main/public/imgs/logo/readme-photo.png)

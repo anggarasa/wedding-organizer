@@ -12,6 +12,8 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
 
   {{-- Font Awesome Icons --}}
   <script src="https://kit.fontawesome.com/9d4da73c07.js" crossorigin="anonymous"></script>
@@ -28,6 +30,7 @@
 
 <body class="bg-gray-100" x-data="{ sidebarOpen: false }">
   <livewire:layout.admin.sidebar />
+  <livewire:layout.admin.notification.popup-notification-admin />
   <!-- Main Content -->
   <div class="lg:pl-64">
     <!-- Top Navigation -->

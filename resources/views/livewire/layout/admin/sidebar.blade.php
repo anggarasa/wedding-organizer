@@ -19,13 +19,14 @@
             </div>
             <nav class="flex-1 overflow-y-auto">
                 <ul class="p-4">
+
                     <x-sidebar-menu-item href="{{ route('admin.dashboard') }}" label="Dashboard" icon="fas fa-home"
                         :active="request()->routeIs('admin.dashboard')" />
 
                     <x-sidebar-dropdown title="Layanan" icon="fas fa-gift" :links="[
-                        ['label' => 'Sewa Baju', 'url' => '#'],
-                        ['label' => 'Sewa Dekorasi', 'url' => '#'],
-                        ['label' => 'Paket Pernikahan', 'url' => '#'],
+                        ['label' => 'Sewa Baju', 'url' => '/admin/layanan/management-sewa-baju'],
+                        ['label' => 'Sewa Dekorasi', 'url' => '/management-sewa-dekorasi'],
+                        ['label' => 'Paket Pernikahan', 'url' => '/management-paket-pernikahan'],
                     ]" />
 
                     <li class="mb-2">
@@ -62,7 +63,7 @@
                         :active="request()->routeIs('admin.dashboard')" />
 
                     <x-sidebar-dropdown title="Layanan" icon="fas fa-gift" :links="[
-                        ['label' => 'Sewa Baju', 'url' => '#'],
+                        ['label' => 'Sewa Baju', 'url' => '/admin/layanan/management-sewa-baju'],
                         ['label' => 'Sewa Dekorasi', 'url' => '#'],
                         ['label' => 'Paket Pernikahan', 'url' => '#'],
                     ]" />

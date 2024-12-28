@@ -62,7 +62,7 @@
 
       <!-- Back Button -->
       <div class="flex justify-center space-x-4">
-        @if (auth()->user()->hasRole('admin'))
+        @if (auth()->check() && auth()->user()->hasRole('admin'))
         <a class="px-8 py-3 bg-gradient text-white font-semibold rounded-xl shadow-lg hover:opacity-90 transform hover:-translate-y-1 transition-all duration-200 flex items-center"
           href="{{ route('admin.dashboard') }}">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -72,9 +72,19 @@
           </svg>
           Kembali
         </a>
-        @else
+        @elseif (auth()->check() && auth()->user()->hasRole('user'))
         <a class="px-8 py-3 bg-gradient text-white font-semibold rounded-xl shadow-lg hover:opacity-90 transform hover:-translate-y-1 transition-all duration-200 flex items-center"
           href="{{ route('dashboard') }}">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+              clip-rule="evenodd" />
+          </svg>
+          Kembali
+        </a>
+        @else
+        <a class="px-8 py-3 bg-gradient text-white font-semibold rounded-xl shadow-lg hover:opacity-90 transform hover:-translate-y-1 transition-all duration-200 flex items-center"
+          href="{{ url()->previous() }}" wire:navigate>
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
               d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"

@@ -24,7 +24,7 @@ new #[Layout('layouts.guest', ['title' => 'Login'])] class extends Component
         if ($user->hasRole('admin')) {
             $this->redirect(route('admin.dashboard'));
         } else {
-            $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+            $this->redirect(route('dashboard'));
         }
     }
 }; ?>

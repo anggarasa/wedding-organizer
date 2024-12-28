@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         $admin = User::create([
-            'slug' => Str::uuid(),
+            'slug' => 'yayah-make-up',
             'name' => 'Yayah Make Up',
             'email' => 'yayahmakeup13@gmail.com',
             'phone' => '085864130067',

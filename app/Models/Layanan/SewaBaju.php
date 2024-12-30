@@ -2,6 +2,7 @@
 
 namespace App\Models\Layanan;
 
+use App\Models\Images\ImageSewaBaju;
 use Illuminate\Database\Eloquent\Model;
 
 class SewaBaju extends Model
@@ -16,4 +17,11 @@ class SewaBaju extends Model
         'category',
         'description',
     ];
+
+    // Hash many Start
+    public function imageSewaBajus()
+    {
+        return $this->hasMany(ImageSewaBaju::class);
+    }
+    // Hash many End
 }

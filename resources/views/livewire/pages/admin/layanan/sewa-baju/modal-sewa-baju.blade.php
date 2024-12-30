@@ -61,7 +61,7 @@
                     </div>
 
                     <div>
-                        <x-image-upload-big name="image" id="image" label="Upload Foto Profil" />
+                        <x-image-upload-big name="images" id="image" label="Upload Gambar" />
                     </div>
 
                     <div wire:ignore>
@@ -86,25 +86,32 @@
 
     <script>
         var quill = new Quill("#description", {
-          modules: {
-              toolbar: [
-                  [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                  ["bold", "italic", "underline"],
-                  [{ list: "ordered" }, { list: "bullet" }],
-                  [{ indent: "-1" }, { indent: "+1" }],
-                  [{ size: ["small", false, "large", "huge"] }],
-                  [{ font: [] }],
-                  [{ color: [] }, { background: [] }],
-                  [{ align: [] }],
-              ],
-          },
-          placeholder: "Type something...",
-          theme: "snow",
-      });
-      
-      quill.on('text-change', function(delta, oldDelta, source) {
-          @this.set('description', quill.root.innerHTML);
-      });
-      
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    ["bold", "italic", "underline"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ font: [] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                ],
+            },
+            placeholder: "Type something...",
+            theme: "snow",
+        });
+
+        // Sinkronisasi data Livewire
+        quill.on('text-change', function (delta, oldDelta, source) {
+            @this.set('description', quill.root.innerHTML);
+        });
+
+        document.addEventListener('livewire:init', function () {
+            // Reset isi Quill Editor ketika event 'resetQuillEditor' dipanggil
+            Livewire.on('resetQuillEditor', function () {
+                quill.setContents([]);
+            });
+        });
     </script>
 </div>

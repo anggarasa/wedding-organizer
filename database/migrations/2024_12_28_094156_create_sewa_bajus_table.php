@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('name');
             $table->text('description');
-            $table->string('image');
             $table->decimal('price', 15, 2);
             $table->enum('status', ['Tersedia', 'Disewa', 'Maintenance']);
             $table->enum('ukuran', ['S', 'M', 'L', 'XL', 'XXL']);

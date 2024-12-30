@@ -168,14 +168,13 @@
                         @foreach ($sewaBaju as $baju)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <img src="{{ asset('storage/'. $baju->image) }}"
+                                <img src="{{ asset('imgs/logo/logo-aplikasi-ym.svg') }}"
                                     class="w-12 h-12 rounded-lg object-cover" />
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
                                     {{ $baju->name }}
                                 </div>
-                                <div class="text-sm text-gray-500">{!! $baju->description !!}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">
@@ -189,11 +188,47 @@
                                 <div class="text-sm text-gray-900">Rp {{ number_format($baju->price, 0, ',', '.') }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span
-                                    class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    {{ $baju->status }}
-                                </span>
+                            <td class="px-6 py-4 whitespace-nowrap" x-data="{ dropdownStatus: false }">
+                                <div class="px-6 py-3">
+                                    <span @click="dropdownStatus = !dropdownStatus" class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full  hover:underline cursor-pointer
+                                        @switch($baju->status)
+                                            @case('Tersedia')
+                                                bg-green-100 text-green-800
+                                            @break
+                                            @case('Disewa')
+                                                bg-yellow-100 text-yellow-800
+                                            @break
+                                            @case('Maintenance')
+                                                bg-red-100 text-red-800
+                                            @break
+                                            @default
+                                                bg-violet-100 text-violet-800
+                                        @endswitch">
+                                        {{ $baju->status }}
+                                    </span>
+                                </div>
+
+                                <div x-show="dropdownStatus" @click.outside="dropdownStatus = false"
+                                    class="z-10 absolute bg-gray-200 divide-y divide-gray-100 rounded-lg shadow w-44"
+                                    style="display: none;">
+                                    <ul class="py-2 text-sm text-gray-900">
+                                        <li>
+                                            <a href="#"
+                                                @click="dropdownStatus = false; $wire.updateStatusDiskonProduct({{ $baju->id }}, true)"
+                                                class="block px-4 py-2 hover:bg-gray-300">Tersedia</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                @click="dropdownStatus = false; $wire.updateStatusDiskonProduct({{ $baju->id }}, false)"
+                                                class="block px-4 py-2 hover:bg-gray-300">Disewa</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"
+                                                @click="dropdownStatus = false; $wire.updateStatusDiskonProduct({{ $baju->id }}, false)"
+                                                class="block px-4 py-2 hover:bg-gray-300">Maintenance</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex space-x-2">

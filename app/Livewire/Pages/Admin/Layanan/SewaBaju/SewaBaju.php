@@ -11,10 +11,15 @@ use Livewire\Component;
 #[On('sewa-baju')]
 class SewaBaju extends Component
 {
+    public function editSewaBaju($id)
+    {
+        $this->dispatch('editSewaBaju', $id)->to(ModalSewaBaju::class);
+    }
+
     public function render()
     {
         return view('livewire.pages.admin.layanan.sewa-baju.sewa-baju', [
-            'sewaBaju' => LayananSewaBaju::latest()->get()
+            'sewaBaju' => LayananSewaBaju::with('imageSewaBajus')->latest()->get()
         ]);
     }
 }

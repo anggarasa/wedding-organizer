@@ -13,13 +13,13 @@
         <div class="relative flex items-center justify-center min-h-screen p-4">
             <div class="relative w-full max-w-2xl p-6 bg-white rounded-xl shadow-lg">
                 <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-semibold text-gray-800">Tambah Baju</h2>
+                    <h2 class="text-xl font-semibold text-gray-800">{{ $isEdit == true ? 'Edit' : 'Tambah' }} Baju</h2>
                     <button type="button" wire:click="resetForm" class="text-gray-400 hover:text-gray-600">
                         <i class="fa-solid fa-x text-2xl"></i>
                     </button>
                 </div>
 
-                <form wire:submit="create" class="space-y-6">
+                <form wire:submit="{{ $isEdit == true ? 'update' : 'create' }}" class="space-y-6">
                     <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                         <div>
                             <x-input name="name" label="Nama Baju" placeholder="Masukkan Nama Baju" wire="name"
@@ -76,7 +76,7 @@
                         </button>
                         <button type="submit"
                             class="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700">
-                            Simpan
+                            {{ $isEdit == true ? 'Update' : 'Simpan' }}
                         </button>
                     </div>
                 </form>
@@ -111,6 +111,10 @@
             // Reset isi Quill Editor ketika event 'resetQuillEditor' dipanggil
             Livewire.on('resetQuillEditor', function () {
                 quill.setContents([]);
+            });
+            
+            Livewire.on('setDescription', function (description) {
+                quill.root.innerHTML = description || '';
             });
         });
     </script>

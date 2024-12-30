@@ -1,5 +1,5 @@
 <div>
-    <label for="{{ $id ?? $name }}" class="block mb-2 text-sm font-medium text-gray-700">
+    <label for="{{ $id ?? $name }}" class="block text-gray-700 text-sm font-bold mb-2">
         {{ $label }}
     </label>
     <select id="{{ $id ?? $name }}" name="{{ $name }}" wire:model="{{ $wireModel ?? $name }}"

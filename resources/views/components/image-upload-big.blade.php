@@ -1,11 +1,11 @@
 <div x-data="fileUpload">
-    <label for="{{ $id ?? $name }}" class="block mb-2 text-sm font-medium text-gray-700">
+    <label for="{{ $id ?? $name }}" class="block text-gray-700 text-sm font-bold mb-2">
         {{ $label ?? 'Upload Gambar' }}
     </label>
 
     <!-- Preview Images -->
     <div class="flex flex-wrap gap-4">
-        <template x-for="preview in previews" :key="preview">
+        <template x-for="(preview, index) in previews" :key="index">
             <div class="relative w-32 h-32">
                 <img :src="preview" alt="Preview Image" class="object-cover w-full h-full rounded-lg" />
             </div>
@@ -45,35 +45,42 @@
         Alpine.data('fileUpload', () => ({
             previews: [],
 
+            init() {
+                Livewire.on('setOldImages', (images) => {
+                    const flattenedImages = images.flat();
+                    this.$nextTick(() => {
+                        this.previews = flattenedImages.filter(url => typeof url === 'string');
+                    });
+                });
+
+                // Tambahkan listener untuk close modal
+                Livewire.on('resetFileUpload', () => {
+                    this.clearPreviews();
+                });
+            },
+
             handleFiles(files) {
-                // Batasi hanya 4 gambar
                 if (files.length > 4) {
-                    alert('Anda hanya dapat mengupload maksimal 4 gambar.');
+                    alert('Maksimal 4 gambar');
                     this.clearPreviews();
                     return;
                 }
 
-                // Clear previews sebelumnya
                 this.clearPreviews();
-
-                // Tambahkan preview gambar baru
                 Array.from(files).forEach(file => {
                     const reader = new FileReader();
-                    reader.onload = e => this.previews.push(e.target.result);
+                    reader.onload = e => {
+                        this.$nextTick(() => {
+                            this.previews.push(e.target.result);
+                        });
+                    };
                     reader.readAsDataURL(file);
                 });
             },
 
             clearPreviews() {
                 this.previews = [];
-            },
+            }
         }));
-    });
-
-    // Reset preview melalui Livewire
-    document.addEventListener('livewire:init', function () {
-        Livewire.on('resetFileUpload', function () {
-            Alpine.store('fileUpload').clearPreviews();
-        });
     });
 </script>

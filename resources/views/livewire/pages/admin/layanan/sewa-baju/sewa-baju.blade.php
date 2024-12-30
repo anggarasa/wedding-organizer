@@ -34,7 +34,7 @@
                     </div>
                     <div class="ml-4">
                         <h3 class="text-sm font-medium text-gray-500">Total Baju</h3>
-                        <p class="text-lg font-semibold text-gray-800">156</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ $sewaBaju->count() }}</p>
                     </div>
                 </div>
             </div>
@@ -49,7 +49,8 @@
                     </div>
                     <div class="ml-4">
                         <h3 class="text-sm font-medium text-gray-500">Tersedia</h3>
-                        <p class="text-lg font-semibold text-gray-800">89</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ $sewaBaju->where('status',
+                            'Tersedia')->count() }}</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +67,8 @@
                         <h3 class="text-sm font-medium text-gray-500">
                             Sedang Disewa
                         </h3>
-                        <p class="text-lg font-semibold text-gray-800">67</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ $sewaBaju->where('status', 'Disewa')->count()
+                            }}</p>
                     </div>
                 </div>
             </div>
@@ -84,7 +86,8 @@
                         <h3 class="text-sm font-medium text-gray-500">
                             Perlu Maintenance
                         </h3>
-                        <p class="text-lg font-semibold text-gray-800">8</p>
+                        <p class="text-lg font-semibold text-gray-800">{{ $sewaBaju->where('status',
+                            'Maintenance')->count() }}</p>
                     </div>
                 </div>
             </div>
@@ -168,8 +171,13 @@
                         @foreach ($sewaBaju as $baju)
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
+                                @forelse($baju->imageSewaBajus->take(1) as $image)
+                                <img src="{{ asset('storage/' . $image->image) }}"
+                                    class="w-12 h-12 rounded-lg object-cover" />
+                                @empty
                                 <img src="{{ asset('imgs/logo/logo-aplikasi-ym.svg') }}"
                                     class="w-12 h-12 rounded-lg object-cover" />
+                                @endforelse
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm font-medium text-gray-900">
@@ -182,7 +190,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">M</div>
+                                <div class="text-sm text-gray-900">{{ $baju->ukuran }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">Rp {{ number_format($baju->price, 0, ',', '.') }}
@@ -232,7 +240,7 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex space-x-2">
-                                    <button @click="showModal = true; modalType = 'edit'"
+                                    <button type="button" wire:click="editSewaBaju({{ $baju->id }})"
                                         class="inline-flex items-center px-3 py-1 text-sm text-violet-600 bg-violet-100 rounded-lg hover:bg-violet-200">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

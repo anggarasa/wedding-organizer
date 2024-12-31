@@ -24,7 +24,6 @@
                         <div>
                             <x-input name="name" label="Nama Baju" placeholder="Masukkan Nama Baju" wire="name"
                                 required="true" />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
                         </div>
 
                         <div>

@@ -97,7 +97,6 @@ class ModalSewaBaju extends Component
         $this->ukuran = $SewaBaju->ukuran;
         $this->price = $SewaBaju->price;
         $this->status = $SewaBaju->status;
-        // $this->images = $SewaBaju->imageSewaBajus;
         $this->description = $SewaBaju->description;
 
         $imageUrls = $SewaBaju->imageSewaBajus->map(function ($image) {

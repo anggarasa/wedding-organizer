@@ -22,6 +22,10 @@
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 
+  {{-- Css Custom --}}
+  <link rel="stylesheet" href="/css/admin/quill-editor.css">
+  {{-- Css Custom --}}
+
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 

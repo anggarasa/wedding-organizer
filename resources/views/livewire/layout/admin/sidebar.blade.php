@@ -24,7 +24,7 @@
                         :active="request()->routeIs('admin.dashboard')" />
 
                     <x-sidebar-dropdown title="Layanan" icon="fas fa-gift" :links="[
-                        ['label' => 'Sewa Baju', 'url' => '/admin/layanan/management-sewa-baju'],
+                        ['label' => 'Sewa Baju', 'url' => '/admin/layanan/sewa-baju/management'],
                         ['label' => 'Sewa Dekorasi', 'url' => '/management-sewa-dekorasi'],
                         ['label' => 'Paket Pernikahan', 'url' => '/management-paket-pernikahan'],
                     ]" />
@@ -63,7 +63,7 @@
                         :active="request()->routeIs('admin.dashboard')" />
 
                     <x-sidebar-dropdown title="Layanan" icon="fas fa-gift" :links="[
-                        ['label' => 'Sewa Baju', 'url' => '/admin/layanan/management-sewa-baju'],
+                        ['label' => 'Sewa Baju', 'url' => '/admin/layanan/sewa-baju/management'],
                         ['label' => 'Sewa Dekorasi', 'url' => '#'],
                         ['label' => 'Paket Pernikahan', 'url' => '#'],
                     ]" />

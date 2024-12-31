@@ -241,6 +241,11 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex space-x-2">
+                                    <a href="{{ route('admin.layanan.sewa-baju.show-sewa-baju', $baju->slug) }}"
+                                        class="inline-flex items-center px-3 py-1 text-sm text-cyan-600 bg-cyan-100 rounded-lg hover:bg-cyan-200">
+                                        <i class="fa-regular fa-eye text-base mr-1"></i>
+                                        Lihat
+                                    </a>
                                     <button type="button" wire:click="editSewaBaju({{ $baju->id }})"
                                         class="inline-flex items-center px-3 py-1 text-sm text-violet-600 bg-violet-100 rounded-lg hover:bg-violet-200">
                                         <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

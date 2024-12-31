@@ -59,7 +59,7 @@ class ModalSewaBaju extends Component
 
             // Simpan Image Sewa Baju
             foreach($this->images as $image) {
-                $imagePath = $image->storeAs('sewa-baju', $SewaBaju->id.'_'.time().'.'.$image->getClientOriginalExtension(), 'public');
+                $imagePath = $image->store('sewa-baju', 'public');
 
                 ImageSewaBaju::create([
                     'sewa_baju_id' => $SewaBaju->id,
@@ -171,7 +171,7 @@ class ModalSewaBaju extends Component
 
                 // Simpan gambar baru
                 foreach($this->images as $image) {
-                    $imagePath = $image->storeAs('sewa-baju', $SewaBaju->id.'_'.time().'.'.$image->getClientOriginalExtension(), 'public');
+                    $imagePath = $image->store('sewa-baju', 'public');
 
                     ImageSewaBaju::create([
                         'sewa_baju_id' => $SewaBaju->id,

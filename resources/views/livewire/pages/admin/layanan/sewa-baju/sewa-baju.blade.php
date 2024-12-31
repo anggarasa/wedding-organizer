@@ -198,22 +198,26 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap" x-data="{ dropdownStatus: false }">
                                 <div class="px-6 py-3">
-                                    <span @click="dropdownStatus = !dropdownStatus" class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full  hover:underline cursor-pointer
-                                        @switch($baju->status)
-                                            @case('Tersedia')
-                                                bg-green-100 text-green-800
-                                            @break
-                                            @case('Disewa')
-                                                bg-yellow-100 text-yellow-800
-                                            @break
-                                            @case('Maintenance')
-                                                bg-red-100 text-red-800
-                                            @break
-                                            @default
-                                                bg-violet-100 text-violet-800
-                                        @endswitch">
-                                        {{ $baju->status }}
-                                    </span>
+                                    <div class="relative inline-flex items-center group">
+                                        <span @click="dropdownStatus = !dropdownStatus" class="px-3 py-1 inline-flex items-center gap-2 text-xs leading-5 font-semibold rounded-full hover:underline cursor-pointer
+                                              @switch($baju->status)
+                                                  @case('Tersedia')
+                                                      bg-green-100 text-green-800
+                                                  @break
+                                                  @case('Disewa')
+                                                      bg-yellow-100 text-yellow-800
+                                                  @break
+                                                  @case('Maintenance')
+                                                      bg-red-100 text-red-800
+                                                  @break
+                                                  @default
+                                                      bg-violet-100 text-violet-800
+                                              @endswitch">
+                                            {{ $baju->status }}
+                                            <i class="fa-solid fa-angle-down text-xs transition-transform duration-200"
+                                                :class="{'rotate-180': dropdownStatus}"></i>
+                                        </span>
+                                    </div>
                                 </div>
 
                                 <div x-show="dropdownStatus" @click.outside="dropdownStatus = false"
@@ -221,19 +225,16 @@
                                     style="display: none;">
                                     <ul class="py-2 text-sm text-gray-900">
                                         <li>
-                                            <a href="#"
-                                                @click="dropdownStatus = false; $wire.updateStatusDiskonProduct({{ $baju->id }}, true)"
-                                                class="block px-4 py-2 hover:bg-gray-300">Tersedia</a>
+                                            <a @click="dropdownStatus = false; $wire.updateStatusSewaBaju({{ $baju->id }}, 'Tersedia')"
+                                                class="block px-4 py-2 cursor-pointer hover:bg-gray-300">Tersedia</a>
                                         </li>
                                         <li>
-                                            <a href="#"
-                                                @click="dropdownStatus = false; $wire.updateStatusDiskonProduct({{ $baju->id }}, false)"
-                                                class="block px-4 py-2 hover:bg-gray-300">Disewa</a>
+                                            <a @click="dropdownStatus = false; $wire.updateStatusSewaBaju({{ $baju->id }}, 'Disewa')"
+                                                class="block px-4 py-2 cursor-pointer hover:bg-gray-300">Disewa</a>
                                         </li>
                                         <li>
-                                            <a href="#"
-                                                @click="dropdownStatus = false; $wire.updateStatusDiskonProduct({{ $baju->id }}, false)"
-                                                class="block px-4 py-2 hover:bg-gray-300">Maintenance</a>
+                                            <a @click="dropdownStatus = false; $wire.updateStatusSewaBaju({{ $baju->id }}, 'Maintenance')"
+                                                class="block px-4 py-2 cursor-pointer hover:bg-gray-300">Maintenance</a>
                                         </li>
                                     </ul>
                                 </div>

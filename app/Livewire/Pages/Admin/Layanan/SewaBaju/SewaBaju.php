@@ -16,6 +16,11 @@ class SewaBaju extends Component
         $this->dispatch('editSewaBaju', $id)->to(ModalSewaBaju::class);
     }
 
+    public function hapusSewaBaju($id)
+    {
+        $this->dispatch('hapusSewaBaju', $id)->to(ModalSewaBaju::class);
+    }
+
     public function render()
     {
         return view('livewire.pages.admin.layanan.sewa-baju.sewa-baju', [

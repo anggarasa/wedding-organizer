@@ -11,6 +11,7 @@ use App\Models\Images\ImageSewaBaju;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use App\Livewire\Pages\Admin\Layanan\SewaBaju\SewaBaju as SewaBajuSewaBaju;
+use Exception;
 use Livewire\Attributes\On;
 
 #[Layout('lalyouts.admin-layout')]
@@ -88,7 +89,6 @@ class ModalSewaBaju extends Component
     #[On('editSewaBaju')]
     public function editSewaBaju($id)
     {
-        $this->resetForm();
         $this->isEdit = true;
         $this->SewaBajuId = $id;
         $SewaBaju = SewaBaju::with('imageSewaBajus')->find($id);
@@ -123,8 +123,7 @@ class ModalSewaBaju extends Component
                 'ukuran' => ['required','string'],
                 'price' => ['required', 'numeric'],
                 'status' => ['required','string'],
-                'images' => 'nullable|array|max:5',
-                'images.*' => 'image|mimes:jpg,png,jpeg|max:2048',
+                'images.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
                 'description' => ['required'],
             ]);
 
@@ -198,6 +197,55 @@ class ModalSewaBaju extends Component
         }
     }
     // End update sewa baju
+
+    // Hapus sewa baju
+    #[On('hapusSewaBaju')]
+    public function hapusSewaBaju($id)
+    {
+        $this->SewaBajuId = $id;
+        $SewaBaju = SewaBaju::find($id);
+        $this->name = $SewaBaju->name;
+
+        $this->dispatch('modal-delete-sewa-baju');
+    }
+    // End Hapus sewa baju
+
+    // Delete sewa baju
+    public function delete()
+    {
+        $SewaBaju = SewaBaju::find($this->SewaBajuId);
+
+        if ($SewaBaju) {
+            // Hapus semua media_files dari storage
+            foreach ($SewaBaju->imageSewaBajus as $image) {
+                if (Storage::exists($image->image)) {
+                    Storage::delete($image->image);
+                }
+            }
+
+            // Hapus produk dan media dari database
+            $SewaBaju->imageSewaBajus()->delete(); // Menghapus media terkait
+            $SewaBaju->delete(); // Menghapus produk
+
+            // Kirim real time hapus data sewa baju
+            $this->dispatch('sewa-baju')->to(SewaBajuSewaBaju::class);
+            $this->resetForm();
+
+            // Kirim pesan sukses atau notifikasi
+            $this->dispatch('notificationAdmin', [
+                'type' => 'success',
+                'message' => 'Berhasil menghapus baju.',
+                'title' => 'Sukses',
+            ]);
+        } else {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => 'Gagal menghapus baju.',
+                'title' => 'Gagal',
+            ]);
+        }
+    }
+    // End Delete sewa baju
     
     public function render()
     {
@@ -206,13 +254,15 @@ class ModalSewaBaju extends Component
 
     public function resetForm()
     {
-        $this->reset(['name', 'category', 'ukuran', 'price', 'status', 'description']);
+        $this->reset(['name', 'category', 'ukuran', 'price', 'status', 'description', 'SewaBajuId']);
         $this->images = [];
+        $this->isEdit = false;
 
         $this->dispatch('resetQuillEditor');
         $this->dispatch('resetFileUpload');
 
         $this->dispatch('close-modal-create-sewa-baju');
+        $this->dispatch('close-modal-delete-sewa-baju');
     }
 
     protected $messages = [

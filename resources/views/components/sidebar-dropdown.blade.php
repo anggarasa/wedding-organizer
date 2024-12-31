@@ -15,8 +15,7 @@
     <ul x-show="dropdownOpen" class="pl-6">
         @foreach ($links as $link)
         <li>
-            <a href="{{ $link['url'] }}" wire:navigate
-                class="block px-4 py-2 text-gray-800 rounded hover:bg-violet-100">{{
+            <a href="{{ $link['url'] }}" class="block px-4 py-2 text-gray-800 rounded hover:bg-violet-100">{{
                 $link['label'] }}</a>
         </li>
         @endforeach

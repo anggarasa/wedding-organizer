@@ -207,7 +207,7 @@
                                                   @case('Disewa')
                                                       bg-yellow-100 text-yellow-800
                                                   @break
-                                                  @case('Maintenance')
+                                                  @case('Tidak Tersedia')
                                                       bg-red-100 text-red-800
                                                   @break
                                                   @default
@@ -233,8 +233,9 @@
                                                 class="block px-4 py-2 cursor-pointer hover:bg-gray-300">Disewa</a>
                                         </li>
                                         <li>
-                                            <a @click="dropdownStatus = false; $wire.updateStatusSewaBaju({{ $baju->id }}, 'Maintenance')"
-                                                class="block px-4 py-2 cursor-pointer hover:bg-gray-300">Maintenance</a>
+                                            <a @click="dropdownStatus = false; $wire.updateStatusSewaBaju({{ $baju->id }}, 'Tidak Tersedia')"
+                                                class="block px-4 py-2 cursor-pointer hover:bg-gray-300">Tidak
+                                                Tersedia</a>
                                         </li>
                                     </ul>
                                 </div>

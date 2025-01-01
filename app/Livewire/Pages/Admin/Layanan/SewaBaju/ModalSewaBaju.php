@@ -119,9 +119,9 @@ class ModalSewaBaju extends Component
             $this->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'category' => ['required', 'string'],
-                'ukuran' => ['required','string'],
+                'ukuran' => ['required', 'string'],
                 'price' => ['required', 'numeric'],
-                'status' => ['required','string'],
+                'status' => ['required', 'string'],
                 'images.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
                 'description' => ['required'],
             ]);
@@ -141,7 +141,6 @@ class ModalSewaBaju extends Component
 
             // Generate slug hanya jika nama berubah
             if ($SewaBaju->name !== $this->name) {
-                // Cek apakah slug sudah ada
                 $baseSlug = Str::slug($this->name);
                 $slug = $baseSlug;
                 $counter = 1;
@@ -159,17 +158,19 @@ class ModalSewaBaju extends Component
 
             // Proses upload gambar baru jika ada
             if ($this->images) {
-                // Hapus gambar lama
+                // Ambil semua gambar lama
                 $oldImages = ImageSewaBaju::where('sewa_baju_id', $SewaBaju->id)->get();
+
+                // Hapus gambar lama dari storage dan database
                 foreach ($oldImages as $oldImage) {
-                    // Hapus file dari storage
-                    Storage::disk('public')->delete($oldImage->image);
-                    // Hapus record dari database
+                    if (Storage::exists($oldImage->image)) {
+                        Storage::delete($oldImage->image);
+                    }
                     $oldImage->delete();
                 }
 
                 // Simpan gambar baru
-                foreach($this->images as $image) {
+                foreach ($this->images as $image) {
                     $imagePath = $image->store('sewa-baju', 'public');
 
                     ImageSewaBaju::create([

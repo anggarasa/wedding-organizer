@@ -4,6 +4,7 @@ namespace App\Livewire\Pages\Admin\Layanan\SewaBaju;
 
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use App\Models\Layanan\SewaBaju;
 use App\Models\Images\ImageSewaBaju;
@@ -12,7 +13,9 @@ use Illuminate\Support\Facades\Storage;
 #[Layout('layouts.admin-layout', ['title' => 'Detail Sewa Baju'])]
 class ShowSewaBaju extends Component
 {
+    use WithFileUploads;
     public $sewaBaju;
+    public $imageViews = [];
     public $status, $ukuran, $category, $price, $images = [], $description;
 
     public $showFullDescription = false;
@@ -21,6 +24,9 @@ class ShowSewaBaju extends Component
     public function mount($slug)
     {
         $this->sewaBaju = SewaBaju::with('imageSewaBajus')->where('slug', $slug)->firstOrFail();
+        $this->imageViews = $this->sewaBaju->imageSewaBajus->map(function ($image) {
+            return asset('storage/' . $image->image); // Sesuaikan kolom 'image'
+        })->toArray();
     }
 
     // Detail Dewscription
@@ -29,94 +35,45 @@ class ShowSewaBaju extends Component
         $this->showFullDescription = !$this->showFullDescription;
     }
 
-    // Edit Sewa Baju
-    public function editSewaBaju()
+    // Update status sewa baju
+    public function updateStatus($status)
     {
-        $this->status = $this->sewaBaju->status;
-        $this->ukuran = $this->sewaBaju->ukuran;
-        $this->category = $this->sewaBaju->category;
-        $this->price = $this->sewaBaju->price;
-        $this->description = $this->sewaBaju->description;
+        $this->sewaBaju->update(['status' => $status]);
 
-        $imageUrls = $this->sewaBaju->imageSewaBajus->map(function ($image) {
-            return $image->image ? asset('storage/' . $image->image) : null;
-        })->filter()->values();
-
-        $this->dispatch('setOldImages', $imageUrls);
-
-        // Dispatch deskripsi ke Quill Editor
-        $this->dispatch('setDescription', $this->description);
-
-        $this->dispatch('modal-edit-sewa-baju');
+        $this->dispatch('notificationAdmin', [
+            'type' => 'success',
+            'message' => 'Status baju berhasil diubah.',
+            'title' => 'Berhasil',
+        ]);
     }
-    // End Edit Sewa Baju
+    // Update status sewa baju
 
-    // Update Sewa Baju
-    public function update()
+    // Update category sewa baju
+    public function updateCategory($category)
     {
-        try {
-            $this->validate([
-                'category' => ['required', 'string'],
-                'ukuran' => ['required','string'],
-                'price' => ['required', 'numeric'],
-                'status' => ['required','string'],
-                'images.*' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
-                'description' => ['required'],
-            ]);
+        $this->sewaBaju->update(['category' => $category]);
 
-            // Cari data yang akan diupdate
-            $SewaBaju = SewaBaju::findOrFail($this->sewaBaju->id);
-
-            // Persiapkan data untuk update
-            $updateData = [
-                'category' => $this->category,
-                'ukuran' => $this->ukuran,
-                'price' => $this->price,
-                'status' => $this->status,
-                'description' => $this->description,
-            ];
-
-            // Update data utama
-            $SewaBaju->update($updateData);
-
-            // Proses upload gambar baru jika ada
-            if ($this->images) {
-                // Hapus gambar lama
-                $oldImages = ImageSewaBaju::where('sewa_baju_id', $SewaBaju->id)->get();
-                foreach ($oldImages as $oldImage) {
-                    // Hapus file dari storage
-                    Storage::disk('public')->delete($oldImage->image);
-                    // Hapus record dari database
-                    $oldImage->delete();
-                }
-
-                // Simpan gambar baru
-                foreach($this->images as $image) {
-                    $imagePath = $image->store('sewa-baju', 'public');
-
-                    ImageSewaBaju::create([
-                        'sewa_baju_id' => $SewaBaju->id,
-                        'image' => $imagePath,
-                    ]);
-                }
-            }
-
-            $this->resetForm();
-
-            $this->dispatch('notificationAdmin', [
-                'type' => 'success',
-                'message' => 'Baju berhasil diperbarui.',
-                'title' => 'Sukses'
-            ]);
-        } catch (\Exception $e) {
-            $this->dispatch('notificationAdmin', [
-                'type' => 'error',
-                'message' => $e->getMessage(),
-                'title' => 'Gagal'
-            ]);
-        }
+        $this->dispatch('notificationAdmin', [
+            'type' => 'success',
+            'message' => 'Kategori baju berhasil diubah.',
+            'title' => 'Berhasil',
+        ]);
     }
-    // End Update Sewa Baju
+    // Update category sewa baju
+
+    // Update ukuran sewa baju
+    public function updateUkuran($ukuran)
+    {
+        $this->sewaBaju->update(['ukuran' => $ukuran]);
+
+        $this->dispatch('notificationAdmin', [
+            'type' => 'success',
+            'message' => 'Ukuran baju berhasil diubah.',
+            'title' => 'Berhasil',
+        ]);
+    }
+    // Update ukuran sewa baju
+
 
     // Hapus Sewa Baju
     public function delete()

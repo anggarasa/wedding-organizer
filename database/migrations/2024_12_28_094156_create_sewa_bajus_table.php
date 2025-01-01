@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->decimal('price', 15, 2);
-            $table->enum('status', ['Tersedia', 'Disewa', 'Maintenance']);
+            $table->enum('status', ['Tersedia', 'Disewa', 'Tidak Tersedia']);
             $table->enum('ukuran', ['S', 'M', 'L', 'XL', 'XXL']);
             $table->enum('category', ['Kebaya Akad', 'Kebaya Resepsi', 'Gaun Pengantin Modern', 'Jas']);
             $table->timestamps();

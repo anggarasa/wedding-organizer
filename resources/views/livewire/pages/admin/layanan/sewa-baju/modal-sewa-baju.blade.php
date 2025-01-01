@@ -55,7 +55,7 @@
                         <x-input-select name="status" label="Status" wireModel="status" :options="[
                                 ['value' => 'Tersedia', 'label' => 'Tersedia'],
                                 ['value' => 'Disewa', 'label' => 'Disewa'],
-                                ['value' => 'Maintenance', 'label' => 'Maintenance'],
+                                ['value' => 'Tidak Tersedia', 'label' => 'Tidak Tersedia'],
                             ]" placeholder="Status" />
                     </div>
 

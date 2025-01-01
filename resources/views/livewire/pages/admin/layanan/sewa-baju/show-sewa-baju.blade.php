@@ -1,12 +1,7 @@
 <div x-data="{
         sidebarOpen: false,
+        images: @entangle('imageViews'),
         currentImage: 0,
-        images: [
-            'https://via.placeholder.com/800x600',
-            'https://via.placeholder.com/800x600',
-            'https://via.placeholder.com/800x600',
-            'https://via.placeholder.com/800x600'
-        ],
         selectSize: 'M',
         quantity: 1,
         showDeleteModal: false,
@@ -33,7 +28,7 @@
                 </h1>
             </div>
             <div class="flex space-x-3">
-                <button wire:click="editSewaBaju"
+                <button type="button"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-violet-600 bg-violet-50 rounded-lg hover:bg-violet-100">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -65,35 +60,200 @@
                     class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                     Riwayat Pemesanan
                 </a>
-                <a href="#"
-                    class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                    Maintenance
-                </a>
             </nav>
         </div>
 
         <!-- Tambahkan status management untuk admin -->
+        <!-- Status Management -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
-            <h3 class="text-lg font-medium text-gray-900 mb-4">
-                Status Management
-            </h3>
+            <!-- Image Management -->
+            <div class="mb-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Galeri Foto</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Image Preview -->
+                    <div class="space-y-4">
+                        <div class="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden">
+                            <img id="preview-image" class="object-cover w-[800px] h-[600px]"
+                                :src="images[currentImage] ?? 'https://via.placeholder.com/800x600'" alt="Preview" />
+                        </div>
+                        <div class="grid grid-cols-4 gap-2">
+                            <template x-for="(image, index) in images" :key="index">
+                                <button @click="currentImage = index"
+                                    class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden ring-2 transition-all"
+                                    :class="currentImage === index ? 'ring-violet-500' : 'ring-transparent'">
+                                    <img :src="image" class="object-cover w-full h-full" />
+                                </button>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="space-y-4">
+                        <div
+                            class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-violet-500 transition-colors">
+                            <div class="text-center">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <div class="mt-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+                                    <label for="file-upload"
+                                        class="px-4 py-2 text-sm font-medium text-violet-600 bg-violet-50 rounded-lg hover:bg-violet-100 cursor-pointer">
+                                        Pilih File
+                                        <input id="file-upload" type="file" accept="image/*" class="hidden" multiple />
+                                    </label>
+                                    <span class="text-sm text-gray-500">atau drag and drop</span>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500">
+                                    PNG, JPG, GIF hingga 10MB
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Uploaded Images List -->
+                        <div class="space-y-2">
+                            <h4 class="text-sm font-medium text-gray-700">Foto Terunggah</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="flex-shrink-0 h-10 w-10 rounded-lg overflow-hidden">
+                                            <img src="https://via.placeholder.com/100"
+                                                class="h-full w-full object-cover" />
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-900">Foto-1.jpg</p>
+                                            <p class="text-xs text-gray-500">2.4 MB</p>
+                                        </div>
+                                    </div>
+                                    <button class="text-red-500 hover:text-red-700">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Status Management</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <!-- Status -->
                 <div class="p-4 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-500 mb-2">Status</div>
-                    <div class="text-base text-gray-900">{{ $sewaBaju->status }}</div>
+                    <div class="text-sm font-medium text-gray-500">Status</div>
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button"
+                            class="relative w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500">
+                            <span class="block truncate">{{ $sewaBaju->status }}</span>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <div x-show="open" @click.away="open = false"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute mt-1 w-full z-10 bg-white shadow-lg rounded-md py-1">
+                            <a wire:click="updateStatus('Tersedia')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">Tersedia</a>
+                            <a wire:click="updateStatus('Disewa')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">Disewa</a>
+                            <a wire:click="updateStatus('Tidak Tersedia')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">Tidak
+                                Tersedia</a>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Kategori -->
                 <div class="p-4 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-500 mb-2">Kategori</div>
-                    <div class="text-base text-gray-900">{{ $sewaBaju->category }}</div>
+                    <div class="text-sm font-medium text-gray-500">Kategori</div>
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button"
+                            class="relative w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500">
+                            <span class="block truncate">{{ $sewaBaju->category }}</span>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <div x-show="open" @click.away="open = false"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute mt-1 w-full z-10 bg-white shadow-lg rounded-md py-1">
+                            <a href="#" wire:click="updateCategory('Kebaya Akad')" @click="open = false"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700">Kebaya
+                                Akad</a>
+                            <a wire:click="updateCategory('Kebaya Resepsi')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">Kebaya
+                                Resepsi</a>
+                            <a wire:click="updateCategory('Gaun Pengantin Modern')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">Gaun
+                                Pengantin Modern</a>
+                            <a wire:click="updateCategory('Jas')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">Jas</a>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Ukuran -->
                 <div class="p-4 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-500 mb-2">Ukuran</div>
-                    <div class="text-base text-gray-900">{{ $sewaBaju->ukuran }}</div>
+                    <div class="text-sm font-medium text-gray-500">Ukuran</div>
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" type="button"
+                            class="relative w-full bg-white border border-gray-300 rounded-md pl-3 pr-10 py-2 text-left cursor-pointer focus:outline-none focus:ring-1 focus:ring-violet-500 focus:border-violet-500">
+                            <span class="block truncate">{{ $sewaBaju->ukuran }}</span>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <div x-show="open" @click.away="open = false"
+                            x-transition:enter="transition ease-out duration-100"
+                            x-transition:enter-start="transform opacity-0 scale-95"
+                            x-transition:enter-end="transform opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-75"
+                            x-transition:leave-start="transform opacity-100 scale-100"
+                            x-transition:leave-end="transform opacity-0 scale-95"
+                            class="absolute mt-1 w-full z-10 bg-white shadow-lg rounded-md py-1">
+                            <a href="#" wire:click="updateUkuran('S')" @click="open = false"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-violet-50 hover:text-violet-700">S</a>
+                            <a wire:click="updateUkuran('M')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">M</a>
+                            <a wire:click="updateUkuran('L')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">L</a>
+                            <a wire:click="updateUkuran('XL')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">XL</a>
+                            <a wire:click="updateUkuran('XXL')" @click="open = false"
+                                class="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-violet-50 hover:text-violet-700">XXL</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -101,15 +261,17 @@
             <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Price -->
                 <div class="p-4 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-500 mb-2">
-                        Harga Sewa per Hari
+                    <div class="text-sm font-medium text-gray-500">Harga Sewa per Hari</div>
+                    <div
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-2xl font-semibold border-gray-300 text-violet-500 rounded-md">
+                        Rp {{ number_format($sewaBaju->price, 0, ',', '.') }}
                     </div>
-                    <div class="text-base text-gray-900">Rp {{ number_format($sewaBaju->price, 0, ',', '.') }}</div>
                 </div>
 
                 <!-- Description -->
-                <div class="p-4 bg-gray-50 rounded-lg" x-data="{ expanded: false }">
-                    <div class="text-sm font-medium text-gray-500 mb-2">Deskripsi</div>
+                <div x-data="{ expanded: false }" class="p-4 bg-gray-50 rounded-lg">
+                    <div class="text-sm font-medium text-gray-500">Deskripsi</div>
+
                     <div class="quill-content">
                         @if(strlen($sewaBaju->description) > $descriptionLimit)
                         <div x-show="!expanded">
@@ -122,7 +284,7 @@
                             {!! $sewaBaju->description !!}
                         </div>
                         <button @click="expanded = !expanded"
-                            class="mt-2 text-violet-500 hover:text-violet-600 text-sm font-medium focus:outline-none">
+                            class="mt-2 text-[#7A1CAC] hover:text-[#6A189C] text-sm font-medium focus:outline-none">
                             <span x-text="expanded ? 'Lihat lebih sedikit' : 'Lihat lebih banyak'"></span>
                         </button>
                         @else
@@ -201,81 +363,6 @@
                         <!-- Tambahkan baris lain sesuai kebutuhan -->
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <!-- Modal Form -->
-        <div x-show="showModal" @modal-edit-sewa-baju.window="showModal = true"
-            @close-modal-edit-sewa-baju.window="showModal = false" class="fixed inset-0 z-30 overflow-y-auto"
-            style="display: none">
-            <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
-            <div class="relative flex items-center justify-center min-h-screen p-4">
-                <div class="relative w-full max-w-2xl p-6 bg-white rounded-xl shadow-lg">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-xl font-semibold text-gray-800">Edit Baju
-                        </h2>
-                        <button type="button" wire:click="resetForm" class="text-gray-400 hover:text-gray-600">
-                            <i class="fa-solid fa-x text-2xl"></i>
-                        </button>
-                    </div>
-
-                    <form wire:submit="update" class="space-y-6">
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                            <div>
-                                <x-input-select name="category" label="Kategori" wireModel="category" :options="[
-                                    ['value' => 'Jas', 'label' => 'Jas'],
-                                    ['value' => 'Kebaya Akad', 'label' => 'Kebaya Akad'],
-                                    ['value' => 'Kebaya Resepsi', 'label' => 'Kebaya Resepsi'],
-                                    ['value' => 'Gaun Pengantin Modern', 'label' => 'Gaun Pengantin Modern'],
-                                ]" placeholder="Pilih Kategori" />
-                            </div>
-
-                            <div>
-                                <x-input-select name="ukuran" label="Ukuran" wireModel="ukuran" :options="[
-                                    ['value' => 'S', 'label' => 'S'],
-                                    ['value' => 'M', 'label' => 'M'],
-                                    ['value' => 'L', 'label' => 'L'],
-                                    ['value' => 'XL', 'label' => 'XL'],
-                                    ['value' => 'XXL', 'label' => 'XXL'],
-                                ]" placeholder="Pilih Ukuran" />
-                            </div>
-
-                            <div>
-                                <x-input type="number" name="price" label="Harga Sewa" placeholder="Masukkan Harga Sewa"
-                                    wire="price" required="true" />
-                            </div>
-
-                            <div>
-                                <x-input-select name="status" label="Status" wireModel="status" :options="[
-                                ['value' => 'Tersedia', 'label' => 'Tersedia'],
-                                ['value' => 'Disewa', 'label' => 'Disewa'],
-                                ['value' => 'Maintenance', 'label' => 'Maintenance'],
-                            ]" placeholder="Status" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <x-image-upload-big name="images" id="image" label="Upload Gambar" />
-                        </div>
-
-                        <div wire:ignore>
-                            <label for="description"
-                                class="block mb-2 text-sm font-medium text-gray-700">Deskripsi</label>
-                            <div id="description">{!! $description !!}</div>
-                        </div>
-
-                        <div class="flex justify-end space-x-3">
-                            <button type="button" wire:click="resetForm"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
-                                Batal
-                            </button>
-                            <button type="submit"
-                                class="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700">
-                                Update
-                            </button>
-                        </div>
-                    </form>
-                </div>
             </div>
         </div>
 

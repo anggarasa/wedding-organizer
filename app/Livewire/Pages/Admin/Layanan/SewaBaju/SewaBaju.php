@@ -6,11 +6,14 @@ use App\Models\Layanan\SewaBaju as LayananSewaBaju;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.admin-layout', ['title' => 'Management Sewa Baju'])]
 #[On('sewa-baju')]
 class SewaBaju extends Component
 {
+    use WithPagination;
+    
     // Edit Sewa Baju
     public function editSewaBaju($id)
     {
@@ -52,7 +55,7 @@ class SewaBaju extends Component
     public function render()
     {
         return view('livewire.pages.admin.layanan.sewa-baju.sewa-baju', [
-            'sewaBaju' => LayananSewaBaju::with('imageSewaBajus')->latest()->get()
+            'sewaBaju' => LayananSewaBaju::with('imageSewaBajus')->latest()->paginate(5)
         ]);
     }
 }

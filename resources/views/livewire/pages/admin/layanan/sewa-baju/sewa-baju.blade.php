@@ -274,35 +274,7 @@
             </div>
 
             <!-- Pagination -->
-            <div class="flex items-center justify-between px-6 py-4 bg-white border-t">
-                <div class="flex items-center text-sm text-gray-500">
-                    <span>Showing</span>
-                    <select class="mx-2 border-gray-300 rounded-md focus:ring-violet-500 focus:border-violet-500">
-                        <option>10</option>
-                        <option>25</option>
-                        <option>50</option>
-                    </select>
-                    <span>of 100 entries</span>
-                </div>
-                <div class="flex space-x-2">
-                    <button
-                        class="px-3 py-1 text-sm text-gray-500 bg-white border rounded-lg hover:bg-gray-100 disabled:opacity-50">
-                        Previous
-                    </button>
-                    <button class="px-3 py-1 text-sm text-white bg-violet-600 rounded-lg hover:bg-violet-700">
-                        1
-                    </button>
-                    <button class="px-3 py-1 text-sm text-gray-500 bg-white border rounded-lg hover:bg-gray-100">
-                        2
-                    </button>
-                    <button class="px-3 py-1 text-sm text-gray-500 bg-white border rounded-lg hover:bg-gray-100">
-                        3
-                    </button>
-                    <button class="px-3 py-1 text-sm text-gray-500 bg-white border rounded-lg hover:bg-gray-100">
-                        Next
-                    </button>
-                </div>
-            </div>
+            {{ $sewaBaju->links('vendor.pagination.tailwind') }}
         </div>
     </main>
 </div>

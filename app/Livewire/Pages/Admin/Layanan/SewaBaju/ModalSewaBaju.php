@@ -58,14 +58,23 @@ class ModalSewaBaju extends Component
             ]);
 
             // Simpan Image Sewa Baju
-            foreach($this->images as $image) {
-                $imagePath = $image->store('sewa-baju', 'public');
-
+            foreach ($this->images as $index => $image) {
+                // Buat nama gambar berdasarkan nama user dan tambahkan index jika lebih dari 1
+                $imageName = time() . ($index > 0 ? '-' . $index : '') . '.' . $image->getClientOriginalExtension();
+                
+                // Simpan gambar dengan nama yang sudah diatur
+                $imagePath = $image->storeAs('sewa-baju', $imageName, 'public');
+                
+                // Dapatkan ukuran file dalam KB
+                $imageSize = round($image->getSize() / 1024, 2); // Dalam KB, dibulatkan ke 2 desimal
+            
+                // Simpan ke database
                 ImageSewaBaju::create([
                     'sewa_baju_id' => $SewaBaju->id,
-                    'image' => $imagePath,
+                    'image' => basename($imagePath), // Hanya nama file
+                    'size' => $imageSize, // Ukuran file dalam KB
                 ]);
-            }
+            }            
 
             $this->dispatch('sewa-baju')->to(SewaBajuSewaBaju::class);
             $this->resetForm();
@@ -89,6 +98,7 @@ class ModalSewaBaju extends Component
     #[On('editSewaBaju')]
     public function editSewaBaju($id)
     {
+        $this->resetForm();
         $this->isEdit = true;
         $this->SewaBajuId = $id;
         $SewaBaju = SewaBaju::with('imageSewaBajus')->find($id);
@@ -100,7 +110,7 @@ class ModalSewaBaju extends Component
         $this->description = $SewaBaju->description;
 
         $imageUrls = $SewaBaju->imageSewaBajus->map(function ($image) {
-            return $image->image ? asset('storage/' . $image->image) : null;
+            return $image->image ? asset('storage/sewa-baju/' . $image->image) : null;
         })->filter()->values();
 
         $this->dispatch('setOldImages', $imageUrls);
@@ -163,21 +173,30 @@ class ModalSewaBaju extends Component
 
                 // Hapus gambar lama dari storage dan database
                 foreach ($oldImages as $oldImage) {
-                    if (Storage::exists($oldImage->image)) {
-                        Storage::delete($oldImage->image);
+                    if (Storage::exists('sewa-baju/' . $oldImage->image)) {
+                        Storage::delete('sewa-baju/' . $oldImage->image);
                     }
                     $oldImage->delete();
                 }
 
                 // Simpan gambar baru
-                foreach ($this->images as $image) {
-                    $imagePath = $image->store('sewa-baju', 'public');
-
+                foreach ($this->images as $index => $image) {
+                    // Buat nama gambar berdasarkan nama user dan tambahkan index jika lebih dari 1
+                    $imageName = time() . ($index > 0 ? '-' . $index : '') . '.' . $image->getClientOriginalExtension();
+                    
+                    // Simpan gambar dengan nama yang sudah diatur
+                    $imagePath = $image->storeAs('sewa-baju', $imageName, 'public');
+                    
+                    // Dapatkan ukuran file dalam KB
+                    $imageSize = round($image->getSize() / 1024, 2); // Dalam KB, dibulatkan ke 2 desimal
+                
+                    // Simpan ke database
                     ImageSewaBaju::create([
                         'sewa_baju_id' => $SewaBaju->id,
-                        'image' => $imagePath,
+                        'image' => basename($imagePath), // Hanya nama file
+                        'size' => $imageSize, // Ukuran file dalam KB
                     ]);
-                }
+                }                
             }
 
             $this->dispatch('sewa-baju')->to(SewaBajuSewaBaju::class);
@@ -218,9 +237,9 @@ class ModalSewaBaju extends Component
         if ($SewaBaju) {
             // Hapus semua media_files dari storage
             foreach ($SewaBaju->imageSewaBajus as $image) {
-                if (Storage::exists($image->image)) {
-                    Storage::delete($image->image);
-                }
+            if (Storage::exists('sewa-baju/' . $image->image)) {
+                Storage::delete('sewa-baju/' . $image->image);
+            }
             }
 
             // Hapus produk dan media dari database
@@ -233,9 +252,9 @@ class ModalSewaBaju extends Component
 
             // Kirim pesan sukses atau notifikasi
             $this->dispatch('notificationAdmin', [
-                'type' => 'success',
-                'message' => 'Berhasil menghapus baju.',
-                'title' => 'Sukses',
+            'type' => 'success',
+            'message' => 'Berhasil menghapus baju.',
+            'title' => 'Sukses',
             ]);
         } else {
             $this->dispatch('notificationAdmin', [

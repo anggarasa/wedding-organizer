@@ -172,7 +172,7 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 @forelse($baju->imageSewaBajus->take(1) as $image)
-                                <img src="{{ asset('storage/' . $image->image) }}"
+                                <img src="{{ asset('storage/sewa-baju/' . $image->image) }}"
                                     class="w-12 h-12 rounded-lg object-cover" />
                                 @empty
                                 <img src="{{ asset('imgs/logo/logo-aplikasi-ym.svg') }}"

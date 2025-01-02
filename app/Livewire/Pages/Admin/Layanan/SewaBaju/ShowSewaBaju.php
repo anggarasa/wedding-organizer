@@ -3,7 +3,6 @@
 namespace App\Livewire\Pages\Admin\Layanan\SewaBaju;
 
 use Livewire\Component;
-use Illuminate\Support\Str;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 use App\Models\Layanan\SewaBaju;
@@ -16,17 +15,35 @@ class ShowSewaBaju extends Component
     use WithFileUploads;
     public $sewaBaju;
     public $imageViews = [];
-    public $status, $ukuran, $category, $price, $images = [], $description;
+    public $images = [];
+    public $temporaryImages = [];
+    public $status, $ukuran, $category, $price, $description;
 
     public $showFullDescription = false;
     public $descriptionLimit = 500; // Batasan karakter untuk tampilan awal
+
+    public $formattedSize;
 
     public function mount($slug)
     {
         $this->sewaBaju = SewaBaju::with('imageSewaBajus')->where('slug', $slug)->firstOrFail();
         $this->imageViews = $this->sewaBaju->imageSewaBajus->map(function ($image) {
-            return asset('storage/' . $image->image); // Sesuaikan kolom 'image'
+            return asset('storage/sewa-baju/' . $image->image);
         })->toArray();
+
+        $image = ImageSewaBaju::where('sewa_baju_id', $this->sewaBaju->id)->first();
+        if ($image) {
+            $imageSizeInBytes = $image->size;
+            $this->formattedSize = $this->formatSize($imageSizeInBytes);
+        }
+    }
+
+    function formatSize($bytes)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0); // Pastikan ukuran file tidak negatif
+        $power = floor(($bytes ? log($bytes) : 0) / log(1024)); // Tentukan unit yang tepat
+        return round($bytes / pow(1024, $power), 2) . ' ' . $units[$power];
     }
 
     // Detail Dewscription
@@ -34,6 +51,87 @@ class ShowSewaBaju extends Component
     {
         $this->showFullDescription = !$this->showFullDescription;
     }
+
+    // Management image sewa baju
+    public function imagesSelected($files)
+    {
+        $currentImageCount = count($this->sewaBaju->imageSewaBajus);
+        $allowedNewImages = 4 - $currentImageCount;
+        
+        if (count($files) > $allowedNewImages) {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => "Anda hanya dapat menambahkan {$allowedNewImages} gambar lagi.",
+                'title' => 'Error',
+            ]);
+            return;
+        }
+
+        $this->temporaryImages = $files;
+    }
+
+    public function cancelUpload()
+    {
+        $this->temporaryImages = [];
+    }
+
+    public function uploadNewImages()
+    {
+        $currentImageCount = count($this->sewaBaju->imageSewaBajus);
+        
+        if ($currentImageCount >= 4) {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => 'Maksimal 4 gambar. Hapus beberapa gambar terlebih dahulu.',
+                'title' => 'Error',
+            ]);
+            return;
+        }
+
+        foreach ($this->temporaryImages as $index => $image) {
+            $imageName = time() . ($index > 0 ? '-' . $index : '') . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('sewa-baju', $imageName, 'public');
+            $imageSize = round($image->getSize() / 1024, 2);
+
+            ImageSewaBaju::create([
+                'sewa_baju_id' => $this->sewaBaju->id,
+                'image' => basename($imagePath),
+                'size' => $imageSize,
+            ]);
+        }
+
+        $this->sewaBaju->refresh();
+        $this->imageViews = $this->sewaBaju->imageSewaBajus->map(function ($image) {
+            return asset('storage/sewa-baju/' . $image->image);
+        })->toArray();
+        
+        $this->temporaryImages = [];
+        $this->dispatch('resetFileInput');
+        $this->dispatch('notificationAdmin', [
+            'type' => 'success',
+            'message' => 'Gambar berhasil diunggah.',
+            'title' => 'Sukses',
+        ]);
+    }
+
+    public function deleteImage($imageId)
+    {
+        $image = ImageSewaBaju::findOrFail($imageId);
+        Storage::delete('sewa-baju/' . $image->image);
+        $image->delete();
+
+        $this->sewaBaju->refresh();
+        $this->imageViews = $this->sewaBaju->imageSewaBajus->map(function ($image) {
+            return asset('storage/sewa-baju/' . $image->image);
+        })->toArray();
+        
+        $this->dispatch('notificationAdmin', [
+            'type' => 'success',
+            'message' => 'Gambar berhasil dihapus.',
+            'title' => 'Sukses',
+        ]);
+    }
+    // Management image sewa baju
 
     // Update status sewa baju
     public function updateStatus($status)

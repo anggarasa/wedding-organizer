@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sewa_baju_id')->constrained()->onDelete('cascade');
             $table->string('image');
+            $table->decimal('size', 10, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -1,12 +1,37 @@
 <div x-data="{
         sidebarOpen: false,
         images: @entangle('imageViews'),
+        temporaryImages: @entangle('temporaryImages'),
+        previewFiles: [],
         currentImage: 0,
         selectSize: 'M',
         quantity: 1,
         showDeleteModal: false,
         showSuccessModal: false,
-        showModal: false
+        showModal: false,
+        showSubmit: false,
+
+        handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            const currentImageCount = this.images.length;
+            const allowedNewImages = 4 - currentImageCount;
+
+            if (files.length > allowedNewImages) {
+                alert(`Anda hanya dapat menambahkan ${allowedNewImages} gambar lagi.`);
+                event.target.value = '';
+                return;
+            }
+
+            this.previewFiles = files.map(file => URL.createObjectURL(file));
+            @this.imagesSelected(files);
+        },
+
+        init() {
+            window.addEventListener('resetFileInput', () => {
+                document.getElementById('file-upload').value = '';
+                this.previewFiles = [];
+            });
+        }
     }">
 
     <!-- Main Content -->
@@ -73,12 +98,12 @@
                     <!-- Image Preview -->
                     <div class="space-y-4">
                         <div class="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden">
-                            <img id="preview-image" class="object-cover w-[800px] h-[600px]"
+                            <img id="preview-image" class="object-cover w-full h-full"
                                 :src="images[currentImage] ?? 'https://via.placeholder.com/800x600'" alt="Preview" />
                         </div>
                         <div class="grid grid-cols-4 gap-2">
                             <template x-for="(image, index) in images" :key="index">
-                                <button @click="currentImage = index"
+                                <button type="button" @click="currentImage = index"
                                     class="aspect-w-1 aspect-h-1 rounded-lg overflow-hidden ring-2 transition-all"
                                     :class="currentImage === index ? 'ring-violet-500' : 'ring-transparent'">
                                     <img :src="image" class="object-cover w-full h-full" />
@@ -101,7 +126,9 @@
                                     <label for="file-upload"
                                         class="px-4 py-2 text-sm font-medium text-violet-600 bg-violet-50 rounded-lg hover:bg-violet-100 cursor-pointer">
                                         Pilih File
-                                        <input id="file-upload" type="file" accept="image/*" class="hidden" multiple />
+                                        <input id="file-upload" wire:model="temporaryImages" type="file"
+                                            accept="image/*" class="hidden" multiple
+                                            @change="handleFileSelect($event)" />
                                     </label>
                                     <span class="text-sm text-gray-500">atau drag and drop</span>
                                 </div>
@@ -111,33 +138,69 @@
                             </div>
                         </div>
 
+                        <!-- Preview of Selected Images -->
+                        <template x-if="previewFiles.length > 0">
+                            <div class="space-y-2">
+                                <h4 class="text-sm font-medium text-gray-700">Preview Gambar Baru</h4>
+                                <div class="space-y-2">
+                                    <template x-for="(file, index) in previewFiles" :key="index">
+                                        <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="flex-shrink-0 h-10 w-10 rounded-lg overflow-hidden">
+                                                    <img :src="file" class="h-full w-full object-cover" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+
                         <!-- Uploaded Images List -->
                         <div class="space-y-2">
                             <h4 class="text-sm font-medium text-gray-700">Foto Terunggah</h4>
                             <div class="space-y-2">
+                                @foreach ($sewaBaju->imageSewaBajus as $image)
                                 <div class="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                                     <div class="flex items-center space-x-3">
                                         <div class="flex-shrink-0 h-10 w-10 rounded-lg overflow-hidden">
-                                            <img src="https://via.placeholder.com/100"
+                                            <img src="{{ asset('storage/sewa-baju/' . $image->image) }}"
                                                 class="h-full w-full object-cover" />
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-gray-900">Foto-1.jpg</p>
-                                            <p class="text-xs text-gray-500">2.4 MB</p>
+                                            <p class="text-sm font-medium text-gray-900">{{ $image->image }}</p>
+                                            <p class="text-xs text-gray-500">{{ $formattedSize }}</p>
                                         </div>
                                     </div>
-                                    <button class="text-red-500 hover:text-red-700">
+                                    <button class="text-red-500 hover:text-red-700"
+                                        wire:click="deleteImage({{ $image->id }})">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
                                     </button>
                                 </div>
+                                @endforeach
                             </div>
                         </div>
+
+                        <!-- Upload and Cancel Buttons -->
+                        <template x-if="previewFiles.length > 0">
+                            <div class="flex justify-end space-x-3 mt-4">
+                                <button wire:click="cancelUpload"
+                                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">
+                                    Batal
+                                </button>
+                                <button wire:click="uploadNewImages"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700">
+                                    Upload
+                                </button>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>
+
 
             <h3 class="text-lg font-medium text-gray-900 mb-4">Status Management</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -440,6 +503,29 @@
     </main>
 
     <script>
+        function previewFiles(event) {
+            const files = event.target.files;
+            const previewContainer = document.getElementById("new-images-preview");
+            previewContainer.innerHTML = ""; // Clear previous previews
+
+            Array.from(files).forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    img.classList.add("object-cover", "w-full", "h-full");
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function cancelNewImages() {
+            const previewContainer = document.getElementById("new-images-preview");
+            previewContainer.innerHTML = ""; // Clear previews
+            document.getElementById("file-upload").value = ""; // Clear file input
+        }
+        
         var quill = new Quill("#description", {
             modules: {
                 toolbar: [

@@ -133,6 +133,47 @@ class ShowSewaBaju extends Component
     }
     // Management image sewa baju
 
+    // Update deskription & price sewa baju
+    public function updateSewaBaju()
+    {
+        $this->price = $this->sewaBaju->price;
+        $this->description = $this->sewaBaju->description;
+
+        // Dispatch deskripsi ke Quill Editor
+        $this->dispatch('setDescriptionShow', $this->description);
+
+        $this->dispatch('modal-edit-sewa-baju');
+    }
+    public function updateDescriptionAndPrice()
+    {
+        try {
+            $this->validate([
+                'description' => 'required',
+                'price' => 'required|numeric',
+            ]);
+    
+            $this->sewaBaju->update([
+                'description' => $this->description,
+                'price' => $this->price,
+            ]);
+
+            $this->resetForm();
+    
+            $this->dispatch('notificationAdmin', [
+                'type' => 'success',
+                'message' => 'Deskripsi dan harga baju berhasil diubah.',
+                'title' => 'Berhasil',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal',
+            ]);
+        }
+    }
+    // Update deskription & price sewa baju
+
     // Update status sewa baju
     public function updateStatus($status)
     {
@@ -214,8 +255,8 @@ class ShowSewaBaju extends Component
         $this->reset(['status', 'ukuran', 'category', 'price', 'description']);
         $this->images = [];
 
-        $this->dispatch('resetQuillEditor');
-        $this->dispatch('resetFileUpload');
+        $this->dispatch('resetQuillEditorShow');
+        // $this->dispatch('resetFileUpload');
 
         $this->dispatch('close-modal-edit-sewa-baju');
         $this->dispatch('close-modal-delete-sewa-baju');

@@ -53,7 +53,7 @@
                 </h1>
             </div>
             <div class="flex space-x-3">
-                <button type="button"
+                <button type="button" wire:click="updateSewaBaju"
                     class="inline-flex items-center px-4 py-2 text-sm font-medium text-violet-600 bg-violet-50 rounded-lg hover:bg-violet-100">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -89,7 +89,6 @@
         </div>
 
         <!-- Tambahkan status management untuk admin -->
-        <!-- Status Management -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
             <!-- Image Management -->
             <div class="mb-6">
@@ -429,6 +428,48 @@
             </div>
         </div>
 
+        <!-- Modal Form -->
+        <div x-show="showModal" @modal-edit-sewa-baju.window="showModal = true"
+            @close-modal-edit-sewa-baju.window="showModal = false" class="fixed inset-0 z-30 overflow-y-auto"
+            style="display: none">
+            <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+            <div class="relative flex items-center justify-center min-h-screen p-4">
+                <div class="relative w-full max-w-2xl p-6 bg-white rounded-xl shadow-lg">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-gray-800">Edit Deskripsi & Harga Baju
+                        </h2>
+                        <button type="button" wire:click="resetForm" class="text-gray-400 hover:text-gray-600">
+                            <i class="fa-solid fa-x text-2xl"></i>
+                        </button>
+                    </div>
+
+                    <form wire:submit="updateDescriptionAndPrice" class="space-y-6">
+                        <div>
+                            <x-input type="number" name="price" label="Harga Sewa" placeholder="Masukkan Harga Sewa"
+                                wire="price" required="true" />
+                        </div>
+
+                        <div wire:ignore>
+                            <label for="description"
+                                class="block mb-2 text-sm font-medium text-gray-700">Deskripsi</label>
+                            <div id="description">{!! $description !!}</div>
+                        </div>
+
+                        <div class="flex justify-end space-x-3">
+                            <button type="button" wire:click="resetForm"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                class="px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700">
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Modal Konfirmasi delete -->
         <div x-show="showDeleteModal" @close-modal-delete-sewa-baju.window="showDeleteModal = false"
             class="fixed inset-0 z-50 overflow-y-auto" style="display: none">
@@ -503,29 +544,6 @@
     </main>
 
     <script>
-        function previewFiles(event) {
-            const files = event.target.files;
-            const previewContainer = document.getElementById("new-images-preview");
-            previewContainer.innerHTML = ""; // Clear previous previews
-
-            Array.from(files).forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    img.classList.add("object-cover", "w-full", "h-full");
-                    previewContainer.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        function cancelNewImages() {
-            const previewContainer = document.getElementById("new-images-preview");
-            previewContainer.innerHTML = ""; // Clear previews
-            document.getElementById("file-upload").value = ""; // Clear file input
-        }
-        
         var quill = new Quill("#description", {
             modules: {
                 toolbar: [
@@ -550,11 +568,11 @@
 
         document.addEventListener('livewire:init', function () {
             // Reset isi Quill Editor ketika event 'resetQuillEditor' dipanggil
-            Livewire.on('resetQuillEditor', function () {
+            Livewire.on('resetQuillEditorShow', function () {
                  quill.setContents([]);
             });
             
-            Livewire.on('setDescription', function (description) {
+            Livewire.on('setDescriptionShow', function (description) {
                 quill.root.innerHTML = description || '';
             });
         });

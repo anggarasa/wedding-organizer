@@ -37,7 +37,7 @@ class ModalSewaBaju extends Component
                 'description' => ['required'],
             ]);
 
-            // Upload Image
+            // slug
             $slug = Str::slug($this->name);
             $existingSewaBaju = SewaBaju::where('slug', $slug)->first();
 

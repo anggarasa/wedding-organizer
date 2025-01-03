@@ -24,4 +24,11 @@ class SewaBaju extends Model
         return $this->hasMany(ImageSewaBaju::class);
     }
     // Hash many End
+
+    // Many to many
+    public function paketPernikahans()
+    {
+        return $this->belongsToMany(PaketPernikahan::class, 'paket_pernikahans_and_sewa_bajus');
+    }
+    // Many to many
 }

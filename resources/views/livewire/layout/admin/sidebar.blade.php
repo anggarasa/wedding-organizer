@@ -26,7 +26,7 @@
                     <x-sidebar-dropdown title="Layanan" icon="fas fa-gift" :links="[
                         ['label' => 'Sewa Baju', 'url' => '/admin/layanan/sewa-baju/management'],
                         ['label' => 'Sewa Dekorasi', 'url' => '/management-sewa-dekorasi'],
-                        ['label' => 'Paket Pernikahan', 'url' => '/management-paket-pernikahan'],
+                        ['label' => 'Paket Pernikahan', 'url' => '/admin/layanan/paket-pernikahan/management'],
                     ]" />
 
                     <li class="mb-2">
@@ -65,7 +65,7 @@
                     <x-sidebar-dropdown title="Layanan" icon="fas fa-gift" :links="[
                         ['label' => 'Sewa Baju', 'url' => '/admin/layanan/sewa-baju/management'],
                         ['label' => 'Sewa Dekorasi', 'url' => '#'],
-                        ['label' => 'Paket Pernikahan', 'url' => '#'],
+                        ['label' => 'Paket Pernikahan', 'url' => '/admin/layanan/paket-pernikahan/management'],
                     ]" />
 
                     <li class="mb-2">

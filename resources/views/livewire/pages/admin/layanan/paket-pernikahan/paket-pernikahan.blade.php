@@ -65,62 +65,74 @@
 
         <!-- Packages Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <template x-for="package in packages" :key="package.id">
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <div class="relative">
-                        <img :src="package.image" :alt="package.name" class="w-full h-48 object-cover" />
-                        <div class="absolute top-4 right-4" x-show="package.featured">
-                            <span class="px-3 py-1 bg-violet-500 text-white text-sm font-semibold rounded-full">
-                                Featured
-                            </span>
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-4">
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900" x-text="package.name"></h3>
-                                <p class="mt-2 text-violet-600 font-bold text-2xl">
-                                    Rp <span x-text="package.price.toLocaleString()"></span>
-                                </p>
-                            </div>
-                            <div class="flex space-x-2">
-                                <button @click="editPackage(package)"
-                                    class="p-2 text-violet-600 hover:bg-violet-50 rounded-lg transition-colors">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                        </path>
-                                    </svg>
-                                </button>
-                                <button @click="packages = packages.filter(p => p.id !== package.id)"
-                                    class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                        </path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                        <p class="text-gray-600 mb-4" x-text="package.description"></p>
-                        <div class="space-y-2">
-                            <h4 class="font-semibold text-gray-900">Includes:</h4>
-                            <ul class="space-y-2">
-                                <template x-for="item in package.includes" :key="item">
-                                    <li class="flex items-center text-gray-600">
-                                        <svg class="w-4 h-4 mr-2 text-violet-500" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M5 13l4 4L19 7"></path>
-                                        </svg>
-                                        <span x-text="item"></span>
-                                    </li>
-                                </template>
-                            </ul>
-                        </div>
+            @foreach ($paketPernikahans as $paket)
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <div class="relative">
+                    @forelse($paket->imagePaketPernikahans->take(1) as $image)
+                    <img src="{{ asset('storage/paket-pernikahan/' . $image->path) }}" alt="{{ $paket->name }}"
+                        class="w-full h-48 object-cover" />
+                    @empty
+                    <img src="{{ asset('imgs/logo/logo-aplikasi-ym.svg') }}" class="w-full h-48 object-cover" />
+                    @endforelse
+                    <div class="absolute top-4 right-4">
+                        <span class="px-3 py-1 bg-violet-500 text-white text-sm font-semibold rounded-full">
+                            diskon
+                        </span>
                     </div>
                 </div>
-            </template>
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <a href="{{ route('admin.layanan.paket-pernikahan.show', $paket->slug) }}"
+                                class="text-xl font-bold text-gray-900">{{ $paket->name }}</a>
+                            <p class="mt-2 text-violet-600 font-bold text-2xl">
+                                Rp <span>{{ number_format($paket->price, 0, ',', '.') }}</span>
+                            </p>
+                        </div>
+                        <div class="flex space-x-2">
+                            <a href="#" class="p-2 text-violet-600 hover:bg-violet-50 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    </path>
+                                </svg>
+                            </a>
+                            <button type="button" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{ Str::limit($paket->description, 100, '...') }}</p>
+                    <div class="space-y-2">
+                        <h4 class="font-semibold text-gray-900">Includes:</h4>
+                        @foreach($includes as $include)
+                        @php
+                        $dom = new DOMDocument();
+                        $dom->loadHTML($include->include, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                        $items = $dom->getElementsByTagName('li');
+                        @endphp
+
+                        <ul class="space-y-2">
+                            @foreach($items as $item)
+                            <li class="flex items-center text-gray-600">
+                                <svg class="w-4 h-4 mr-2 text-violet-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                <span>{!! $item->nodeValue !!}</span>
+                            </li>
+                            @endforeach
+                        </ul>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endforeach
         </div>
     </main>
 </div>

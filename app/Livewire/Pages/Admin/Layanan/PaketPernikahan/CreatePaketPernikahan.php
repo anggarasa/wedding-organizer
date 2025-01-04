@@ -86,12 +86,9 @@ class CreatePaketPernikahan extends Component
 
                 ImagePaketPernikahan::create([
                     'paket_pernikahan_id' => $paketPernikahan->id,
-                    'path' => $imagesPath,
+                    'path' => basename($imagesPath),
                 ]);
             }
-
-            // Kirim data realtime ke halaman management paket pernikahan
-            $this->dispatch('paketPernikahanStored');
 
             $this->dispatch('modal-success-create-paket-pernikahan');
         } catch (\Exception $e) {

@@ -251,7 +251,7 @@
 
     <script>
         // Quill Editor For Include
-        var quill = new Quill("#include", {
+        var quillInclude = new Quill("#include", {
             modules: {
                 toolbar: [
                     [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -266,28 +266,14 @@
             },
             placeholder: "Type something...",
             theme: "snow",
+        });
+
+        quillInclude.on("text-change", function (delta, oldDelta, source) {
+            @this.set("include", quillInclude.root.innerHTML);
         });
 
         // Quill Editor For layananTambahan
-        var quill = new Quill("#layananTambahan", {
-            modules: {
-                toolbar: [
-                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-                    ["bold", "italic", "underline"],
-                    [{ list: "ordered" }, { list: "bullet" }],
-                    [{ indent: "-1" }, { indent: "+1" }],
-                    [{ size: ["small", false, "large", "huge"] }],
-                    [{ font: [] }],
-                    [{ color: [] }, { background: [] }],
-                    [{ align: [] }],
-                ],
-            },
-            placeholder: "Type something...",
-            theme: "snow",
-        });
-        
-        // Quill Editor For syarat
-        var quill = new Quill("#syarat", {
+        var quillLayananTambahan = new Quill("#layananTambahan", {
             modules: {
                 toolbar: [
                     [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -304,11 +290,30 @@
             theme: "snow",
         });
 
-        // Sinkronisasi data Livewire
-        quill.on('text-change', function (delta, oldDelta, source) {
-            @this.set('include', quill.root.innerHTML);
-            @this.set('layananTambahan', quill.root.innerHTML);
-            @this.set('syarat', quill.root.innerHTML);
+        quillLayananTambahan.on("text-change", function (delta, oldDelta, source) {
+            @this.set("layananTambahan", quillLayananTambahan.root.innerHTML);
+        });
+
+        // Quill Editor For syarat
+        var quillSyarat = new Quill("#syarat", {
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                    ["bold", "italic", "underline"],
+                    [{ list: "ordered" }, { list: "bullet" }],
+                    [{ indent: "-1" }, { indent: "+1" }],
+                    [{ size: ["small", false, "large", "huge"] }],
+                    [{ font: [] }],
+                    [{ color: [] }, { background: [] }],
+                    [{ align: [] }],
+                ],
+            },
+            placeholder: "Type something...",
+            theme: "snow",
+        });
+
+        quillSyarat.on("text-change", function (delta, oldDelta, source) {
+            @this.set("syarat", quillSyarat.root.innerHTML);
         });
     </script>
 </div>

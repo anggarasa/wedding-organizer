@@ -3,7 +3,6 @@
 namespace App\Livewire\Pages\Admin\Layanan\PaketPernikahan;
 
 use Livewire\Component;
-use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
 use App\Models\Layanan\PaketPernikahan as LayananPaket;
 

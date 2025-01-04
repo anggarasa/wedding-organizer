@@ -10,15 +10,8 @@ use App\Models\Layanan\PaketPernikahan as LayananPaket;
 #[Layout('layouts.admin-layout', ['title' => 'Management Paket Pernikahan'])]
 class PaketPernikahan extends Component
 {
-    public $includes;
     public $paketPernikahanId;
-
-    public function mount()
-    {
-        // Sesuaikan query ini dengan struktur database Anda
-        $this->includes = LayananPaket::all();
-    }
-
+    
     // Delete paket pernikahan
     public function deletePaketPernikahan($id)
     {

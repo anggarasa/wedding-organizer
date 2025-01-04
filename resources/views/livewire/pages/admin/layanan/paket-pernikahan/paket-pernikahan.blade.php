@@ -60,7 +60,7 @@
                     <div class="flex justify-between items-start mb-4">
                         <div>
                             <a href="{{ route('admin.layanan.paket-pernikahan.show', $paket->slug) }}"
-                                class="text-xl font-bold text-gray-900">{{ $paket->name }}</a>
+                                class="text-xl font-bold text-gray-900 hover:underline">{{ $paket->name }}</a>
                             <p class="mt-2 text-violet-600 font-bold text-2xl">
                                 Rp <span>{{ number_format($paket->price, 0, ',', '.') }}</span>
                             </p>
@@ -133,10 +133,9 @@
                     <p class="text-gray-600 mb-4">{{ Str::limit($paket->description, 100, '...') }}</p>
                     <div class="space-y-2">
                         <h4 class="font-semibold text-gray-900">Includes:</h4>
-                        @foreach($includes as $include)
                         @php
                         $dom = new DOMDocument();
-                        $dom->loadHTML($include->include, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                        $dom->loadHTML($paket->include, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                         $items = $dom->getElementsByTagName('li');
                         @endphp
 
@@ -152,7 +151,6 @@
                             </li>
                             @endforeach
                         </ul>
-                        @endforeach
                     </div>
                 </div>
             </div>

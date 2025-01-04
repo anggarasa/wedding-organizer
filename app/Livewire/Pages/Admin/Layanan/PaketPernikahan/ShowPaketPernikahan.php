@@ -12,8 +12,6 @@ class ShowPaketPernikahan extends Component
     public $paket;
     public $bajusAkad;
     public $bajusResepsi;
-    public $includes;
-    public $syarats;
 
     public function mount($slug)
     {
@@ -24,8 +22,6 @@ class ShowPaketPernikahan extends Component
         // Filter data akad dan resepsi dari koleksi hasil query
         $this->bajusAkad = $this->paket->sewaBajus->where('category', 'Kebaya Akad');
         $this->bajusResepsi = $this->paket->sewaBajus->where('category', 'Kebaya Resepsi');
-        $this->includes = PaketPernikahan::all();
-        $this->syarats = PaketPernikahan::all();
     }
     
     public function render()

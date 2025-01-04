@@ -182,10 +182,9 @@
 
                 <!-- Includes Tab -->
                 <div x-show="package.activeTab === 'includes'">
-                    @foreach($includes as $include)
                     @php
                     $dom = new DOMDocument();
-                    $dom->loadHTML($include->include, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    $dom->loadHTML($paket->include, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     $items = $dom->getElementsByTagName('li');
                     @endphp
 
@@ -201,7 +200,6 @@
                         </li>
                         @endforeach
                     </ul>
-                    @endforeach
                 </div>
 
                 <!-- Additional Services Tab -->
@@ -222,10 +220,9 @@
 
                 <!-- Terms Tab -->
                 <div x-show="package.activeTab === 'terms'">
-                    @foreach($syarats as $syarat)
                     @php
                     $dom = new DOMDocument();
-                    $dom->loadHTML($syarat->syarat, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    $dom->loadHTML($paket->syarat, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     $items = $dom->getElementsByTagName('li');
                     @endphp
 
@@ -241,7 +238,6 @@
                         </li>
                         @endforeach
                     </ul>
-                    @endforeach
                 </div>
 
                 <!-- Reviews Tab -->

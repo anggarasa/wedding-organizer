@@ -10,12 +10,20 @@ use Livewire\Attributes\Layout;
 class ShowPaketPernikahan extends Component
 {
     public $paket;
+    public $bajusAkad;
+    public $bajusResepsi;
     public $includes;
     public $syarats;
 
     public function mount($slug)
     {
-        $this->paket = PaketPernikahan::with('imagePaketPernikahans')->where('slug', $slug)->firstOrFail();
+        $this->paket = PaketPernikahan::with(['imagePaketPernikahans', 'sewaBajus.imageSewaBajus'])
+        ->where('slug', $slug)
+        ->firstOrFail();
+
+        // Filter data akad dan resepsi dari koleksi hasil query
+        $this->bajusAkad = $this->paket->sewaBajus->where('category', 'Kebaya Akad');
+        $this->bajusResepsi = $this->paket->sewaBajus->where('category', 'Kebaya Resepsi');
         $this->includes = PaketPernikahan::all();
         $this->syarats = PaketPernikahan::all();
     }

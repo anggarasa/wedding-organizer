@@ -206,17 +206,22 @@
 
                 <!-- Additional Services Tab -->
                 <div x-show="package.activeTab === 'additional'">
+                    @php
+                    $dom = new DOMDocument();
+                    $dom->loadHTML($paket->layanan_tambahan, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    $items = $dom->getElementsByTagName('li');
+                    @endphp
                     <ul class="space-y-3">
-                        <template x-for="service in package.additionalServices" :key="service">
-                            <li class="flex items-start">
-                                <svg class="w-5 h-5 text-violet-500 mr-3 mt-0.5" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                <span class="text-gray-600" x-text="service"></span>
-                            </li>
-                        </template>
+                        @foreach ($items as $item)
+                        <li class="flex items-start">
+                            <svg class="w-5 h-5 text-violet-500 mr-3 mt-0.5" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            <span class="text-gray-600">{!! $item->nodeValue !!}</span>
+                        </li>
+                        @endforeach
                     </ul>
                 </div>
 
@@ -231,10 +236,10 @@
                     <ul class="space-y-2">
                         @foreach($items as $item)
                         <li class="flex items-center text-gray-600">
-                            <svg class="w-4 h-4 mr-2 text-violet-500" fill="none" stroke="currentColor"
+                            <svg class="w-5 h-5 text-violet-500 mr-3 mt-0.5" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7"></path>
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                             <span>{!! $item->nodeValue !!}</span>
                         </li>

@@ -41,6 +41,7 @@
 
                         <!-- Upload Gambar -->
                         <div>
+                            @if ($isEdit == true)
                             <label class="block text-gray-700 text-sm font-bold">Gambar Lama</label>
                             <div class="flex flex-wrap gap-4 mb-3">
                                 @foreach ($imageLama as $image)
@@ -50,6 +51,7 @@
                                 </div>
                                 @endforeach
                             </div>
+                            @endif
                             <x-image-upload-big name="images" id="image"
                                 label="{{ $isEdit == true ? 'Upload Gambar Baru' : 'Upload Gambar' }}" />
                         </div>

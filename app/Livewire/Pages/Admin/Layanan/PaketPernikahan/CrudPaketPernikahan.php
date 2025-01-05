@@ -13,7 +13,7 @@ use App\Models\Images\ImagePaketPernikahan;
 use Illuminate\Validation\ValidationException;
 
 #[Layout('layouts.admin-layout', ['title' => 'Management Paket Pernikahan'])]
-class CreatePaketPernikahan extends Component
+class CrudPaketPernikahan extends Component
 {
     use WithFileUploads;
 
@@ -230,7 +230,7 @@ class CreatePaketPernikahan extends Component
     
     public function render()
     {
-        return view('livewire.pages.admin.layanan.paket-pernikahan.create-paket-pernikahan', [
+        return view('livewire.pages.admin.layanan.paket-pernikahan.crud-paket-pernikahan', [
             'kebayaAkad' => SewaBaju::with('imageSewaBajus')->where('category', 'Kebaya Akad')->get(),
             'kebayaResepsi' => SewaBaju::with('imageSewaBajus')->where('category', 'Kebaya Resepsi')->get(),
         ]);

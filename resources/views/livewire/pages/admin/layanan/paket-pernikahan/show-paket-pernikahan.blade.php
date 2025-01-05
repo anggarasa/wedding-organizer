@@ -114,10 +114,10 @@
                         </p>
                     </div>
                     <div class="flex space-x-3">
-                        <button
+                        <a href="{{ route('admin.layanan.paket-pernikahan.edit', $paket->slug) }}"
                             class="px-6 py-3 bg-white border-2 border-violet-600 text-violet-600 rounded-lg hover:bg-violet-50 transition-colors">
                             Edit Paket
-                        </button>
+                        </a>
                         <button
                             class="px-6 py-3 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors">
                             Hapus Paket

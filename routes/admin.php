@@ -23,6 +23,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin', 'verif
         Route::prefix('paket-pernikahan')->name('paket-pernikahan.')->group(function () {
             Route::get('/management', PaketPernikahan::class)->name('management');
             Route::get('/create', CreatePaketPernikahan::class)->name('create');
+            Route::get('/edit/{slug}', CreatePaketPernikahan::class)->name('edit');
             Route::get('/show/{slug}', ShowPaketPernikahan::class)->name('show');
         });
     });

@@ -4,10 +4,10 @@
             <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900">
-                        Tambah Paket Wedding
+                        {{ $isEdit == true ? 'Edit' : 'Tambah' }} Paket Wedding
                     </h1>
                     <p class="mt-2 text-gray-600">
-                        Tambahkan Data Paket Pernikahan Sebanyak Yang Anda Inginkan
+                        {{ $isEdit == true ? 'Edit' : 'Tambahkan' }} Data Paket Pernikahan Sebanyak Yang Anda Inginkan
                     </p>
                 </div>
                 <button type="button" @click="showWarningModal = true"
@@ -19,7 +19,7 @@
         </div>
 
         <div class="bg-white rounded-lg shadow-sm p-6 md:p-8">
-            <form wire:submit="createPaketPernikahan">
+            <form wire:submit="{{ $isEdit == true ? 'updatePaketPernikahan' : 'createPaketPernikahan' }}">
                 <div class="space-y-8">
                     <!-- Basic Information -->
                     <div class="space-y-6">
@@ -41,7 +41,17 @@
 
                         <!-- Upload Gambar -->
                         <div>
-                            <x-image-upload-big name="images" id="image" label="Upload Gambar" />
+                            <label class="block text-gray-700 text-sm font-bold">Gambar Lama</label>
+                            <div class="flex flex-wrap gap-4 mb-3">
+                                @foreach ($imageLama as $image)
+                                <div class="relative w-32 h-32">
+                                    <img src="{{ asset('storage/paket-pernikahan/'. $image->path) }}" alt="{{ $name }}"
+                                        class="object-cover w-full h-full rounded-lg" />
+                                </div>
+                                @endforeach
+                            </div>
+                            <x-image-upload-big name="images" id="image"
+                                label="{{ $isEdit == true ? 'Upload Gambar Baru' : 'Upload Gambar' }}" />
                         </div>
 
                         <!-- Deskripsi -->
@@ -207,7 +217,7 @@
                         </button>
                         <button type="submit"
                             class="px-6 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500">
-                            Simpan Paket
+                            {{ $isEdit == true ? 'Edit' : 'Simpan' }} Paket
                         </button>
                     </div>
                 </div>
@@ -215,7 +225,7 @@
         </div>
 
         <!-- Modal Success -->
-        <div x-show="showSuccessModal" @modal-success-create-paket-pernikahan.window="showSuccessModal = true"
+        <div x-show="showSuccessModal" @modal-success-paket-pernikahan.window="showSuccessModal = true"
             class="fixed inset-0 z-50 overflow-y-auto" style="display: none">
             <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
             <div class="relative flex items-center justify-center min-h-screen p-4">
@@ -235,7 +245,7 @@
                     </h3>
                     <p class="text-sm text-center text-gray-500 mb-6">
                         Data <span class="font-medium text-gray-900">{{ $name }}</span> telah berhasil
-                        ditambahkan.
+                        {{ $isEdit == true ? 'diubah' : 'ditambahkan' }}.
                     </p>
 
                     <div class="flex justify-center">
@@ -268,7 +278,8 @@
                         Peringatan
                     </h3>
                     <p class="text-sm text-center text-gray-500 mb-6">
-                        Apakah Anda yakin tidak ingin melanjutkan tambah paket pernikahan?
+                        Apakah Anda yakin tidak ingin melanjutkan {{ $isEdit == true ? 'edit' : 'tambah' }} paket
+                        pernikahan?
                     </p>
 
                     <div class="flex justify-center space-x-3">

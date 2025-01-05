@@ -66,7 +66,7 @@ class SewaBajuSeeder extends Seeder
                 'price' => 190000.00,
                 'status' => 'Tersedia',
                 'ukuran' => 'L',
-                'category' => 'Kebaya Resepsi',
+                'category' => 'Kebaya Akad',
                 'images' => [
                     ['image' => 'componen-wedding-14.jpg', 'size' => 900.20],
                 ],

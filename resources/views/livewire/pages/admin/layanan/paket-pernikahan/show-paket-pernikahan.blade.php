@@ -309,7 +309,7 @@
                             </div>
                             @endforeach
                             <!-- Add New Akad Dress Button -->
-                            <div
+                            <button type="button" wire:click="addBajuAkad({{ $paket->id }})"
                                 class="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-violet-500 cursor-pointer transition-colors p-4 aspect-[4/3]">
                                 <div class="text-center">
                                     <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor"
@@ -319,7 +319,7 @@
                                     </svg>
                                     <span class="text-sm text-gray-600">Tambah Baju Akad</span>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </div>
 
@@ -355,7 +355,7 @@
                             </div>
                             @endforeach
                             <!-- Add New Resepsi Dress Button -->
-                            <div
+                            <button type="button" wire:click="addBajuResepsi({{ $paket->id }})"
                                 class="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center hover:border-violet-500 cursor-pointer transition-colors p-4 aspect-[4/3]">
                                 <div class="text-center">
                                     <svg class="w-8 h-8 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor"
@@ -365,12 +365,15 @@
                                     </svg>
                                     <span class="text-sm text-gray-600">Tambah Baju Resepsi</span>
                                 </div>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Management dress --}}
+        <livewire:pages.admin.layanan.paket-pernikahan.modal-show-add-baju-paket-pernikahan />
 
         <!-- Delete Confirmation Modal -->
         <div x-show="modalDelete" @close-modal-delete-paket-pernikahan.window="modalDelete = false"

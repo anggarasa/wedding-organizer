@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Layanan\PaketPernikahan;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Attributes\On;
 
 #[Layout('layouts.admin-layout', ['title' => 'Detail Paket Pernikahan'])]
 class ShowPaketPernikahan extends Component
@@ -13,17 +14,39 @@ class ShowPaketPernikahan extends Component
     public $paket;
     public $bajusAkad;
     public $bajusResepsi;
-
+    
     public function mount($slug)
     {
         $this->paket = PaketPernikahan::with(['imagePaketPernikahans', 'sewaBajus.imageSewaBajus'])
         ->where('slug', $slug)
         ->firstOrFail();
-
+        
         // Filter data akad dan resepsi dari koleksi hasil query
         $this->bajusAkad = $this->paket->sewaBajus->where('category', 'Kebaya Akad');
         $this->bajusResepsi = $this->paket->sewaBajus->where('category', 'Kebaya Resepsi');
     }
+    
+    #[On('management-dress')]
+    public function loadDress()
+    {
+        // Filter data akad dan resepsi dari koleksi hasil query
+        $this->bajusAkad = $this->paket->sewaBajus->where('category', 'Kebaya Akad');
+        $this->bajusResepsi = $this->paket->sewaBajus->where('category', 'Kebaya Resepsi');
+    }
+
+    // Add baju Akad
+    public function addBajuAkad($id)
+    {
+        $this->dispatch('addAkad', $id)->to(ModalShowAddBajuPaketPernikahan::class);
+    }
+    // Add baju Akad
+
+    // Add baju Resepsi
+    public function addBajuResepsi($id)
+    {
+        $this->dispatch('addResepsi', $id)->to(ModalShowAddBajuPaketPernikahan::class);
+    }
+    // Add baju Resepsi
 
     // delete paket pernikahan
     public function delete($id)

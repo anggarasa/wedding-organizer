@@ -139,10 +139,12 @@
                         $dom = new DOMDocument();
                         $dom->loadHTML($paket->include, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                         $items = $dom->getElementsByTagName('li');
+                        $limitedItems = iterator_to_array($items);
+                        $limitedItems = array_slice($limitedItems, 0, 5); // Ambil hanya 5 item
                         @endphp
 
                         <ul class="space-y-2">
-                            @foreach($items as $item)
+                            @foreach($limitedItems as $item)
                             <li class="flex items-center text-gray-600">
                                 <svg class="w-4 h-4 mr-2 text-violet-500" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -152,6 +154,7 @@
                                 <span>{!! $item->nodeValue !!}</span>
                             </li>
                             @endforeach
+                            <span>.....</span>
                         </ul>
                     </div>
                 </div>

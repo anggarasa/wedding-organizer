@@ -291,16 +291,6 @@
                                     <img src="{{ asset('storage/sewa-baju/'. $image->image) }}" alt="{{ $akad->name }}"
                                         class="w-full h-full object-cover" />
                                     @endforeach
-                                    <div class="absolute top-2 right-2">
-                                        <button class="p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
-                                            <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    </div>
                                 </div>
                                 <div class="p-4">
                                     <h4 class="font-medium text-gray-900 mb-1">{{ $akad->name }}</h4>
@@ -336,17 +326,7 @@
                                     @foreach ($resepsi->imageSewaBajus as $image)
                                     <img src="{{ asset('storage/sewa-baju/'. $image->image) }}"
                                         alt="{{ $resepsi->name }}" class="w-full h-full object-cover" />
-                                    <div class="absolute top-2 right-2">
-                                        @endforeach
-                                        <button class="p-2 bg-white rounded-full shadow-md hover:bg-gray-50">
-                                            <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
-                                                </path>
-                                            </svg>
-                                        </button>
-                                    </div>
+                                    @endforeach
                                 </div>
                                 <div class="p-4">
                                     <h4 class="font-medium text-gray-900 mb-1">{{ $resepsi->name }}</h4>

@@ -95,7 +95,7 @@
                                 <div
                                     class="inline-flex items-center bg-violet-100 text-violet-800 px-3 py-1 rounded-full text-sm">
                                     <span>{{ $kebaya->name }}</span>
-                                    <button wire:click="toggleKebaya({{ $kebaya->id }})"
+                                    <button type="button" wire:click="toggleKebaya({{ $kebaya->id }})"
                                         class="ml-2 focus:outline-none">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

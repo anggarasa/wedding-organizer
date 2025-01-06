@@ -142,7 +142,7 @@
         <!-- Content Tabs -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
             <div class="border-b">
-                <nav class="flex space-x-8 px-6" aria-label="Tabs">
+                <nav class="flex space-x-8 px-6 overflow-x-auto md:overflow-visible" aria-label="Tabs">
                     <button @click="package.activeTab = 'description'"
                         :class="{'text-violet-600 border-violet-600': package.activeTab === 'description', 'text-gray-500 hover:text-gray-700 border-transparent': package.activeTab !== 'description'}"
                         class="py-4 px-1 border-b-2 font-medium text-sm">

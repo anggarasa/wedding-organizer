@@ -29,11 +29,12 @@
                         ['label' => 'Paket Pernikahan', 'url' => '/admin/layanan/paket-pernikahan/management'],
                     ]" />
 
-                    <li class="mb-2">
-                        <a href="#" class="block px-4 py-2 text-gray-800 rounded hover:bg-pink-100">
-                            Booking
-                        </a>
-                    </li>
+                    <x-sidebar-dropdown title="Diskon" icon="fas fa-tag" :links="[
+                        ['label' => 'Diskon Code', 'url' => '/admin/layanan/sewa-baju/management'],
+                        ['label' => 'Diskon Paket Pernikahan', 'url' => '#'],
+                        ['label' => 'Diskon Sewa Baju', 'url' => '#'],
+                    ]" />
+
                     <li class="mb-2">
                         <a href="#" class="block px-4 py-2 text-gray-800 rounded hover:bg-pink-100">
                             Gallery
@@ -68,11 +69,12 @@
                         ['label' => 'Paket Pernikahan', 'url' => '/admin/layanan/paket-pernikahan/management'],
                     ]" />
 
-                    <li class="mb-2">
-                        <a href="#" class="block px-4 py-2 text-gray-800 rounded hover:bg-pink-100">
-                            Booking
-                        </a>
-                    </li>
+                    <x-sidebar-dropdown title="Diskon" icon="fas fa-tag" :links="[
+                        ['label' => 'Diskon Code', 'url' => '/admin/layanan/sewa-baju/management'],
+                        ['label' => 'Diskon Paket Pernikahan', 'url' => '#'],
+                        ['label' => 'Diskon Sewa Baju', 'url' => '#'],
+                    ]" />
+
                     <li class="mb-2">
                         <a href="#" class="block px-4 py-2 text-gray-800 rounded hover:bg-pink-100">
                             Gallery

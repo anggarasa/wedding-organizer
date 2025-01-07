@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LogoutController;
+use App\Livewire\Pages\Admin\Diskon\DiskonCode\DiskonCode;
 use SebastianBergmann\CodeUnit\FunctionUnit;
 use App\Livewire\Pages\Admin\Layanan\SewaBaju\SewaBaju;
 use App\Livewire\Pages\Admin\Layanan\SewaBaju\ShowSewaBaju;
@@ -25,6 +26,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin', 'verif
             Route::get('/create', CrudPaketPernikahan::class)->name('create');
             Route::get('/edit/{slug}', CrudPaketPernikahan::class)->name('edit');
             Route::get('/show/{slug}', ShowPaketPernikahan::class)->name('show');
+        });
+    });
+
+    Route::prefix('diskon')->name('diskon.')->group(function () {
+        Route::prefix('diskon-code')->name('diskon-code.')->group(function () {
+            Route::get('/management', DiskonCode::class)->name('management');
         });
     });
 

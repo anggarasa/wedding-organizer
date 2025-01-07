@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->decimal('discount', 15, 2);
             $table->integer('penggunaan')->default(1);
-            $table->enum('status', ['aktif', 'kadaluarsa'])->default('aktif');
+            $table->enum('status', ['aktif', 'tidak aktif', 'kadaluarsa'])->default('aktif');
             $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();

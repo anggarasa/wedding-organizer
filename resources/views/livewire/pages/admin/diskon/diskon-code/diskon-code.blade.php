@@ -247,6 +247,14 @@
             @endforeach
         </div>
 
+        <div class="w-full text-center mt-6">
+            @if ($diskonCodes->count() < $tatalData) <button type="button" wire:click="loadMore"
+                class="rounded-lg border border-violet-700 bg-violet-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-violet-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100">
+                Show more
+                </button>
+                @endif
+        </div>
+
         <!-- Empty State -->
         <template x-if="filteredDiscounts.length === 0">
             <div class="text-center py-12">

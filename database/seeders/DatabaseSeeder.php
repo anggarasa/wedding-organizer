@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             SpatieSeeder::class,
             UserSeeder::class,
             SewaBajuSeeder::class,
-            PaketPernikahanSeeder::class
+            PaketPernikahanSeeder::class,
+            DiskonCodeSeeder::class
         ]);
     }
 }

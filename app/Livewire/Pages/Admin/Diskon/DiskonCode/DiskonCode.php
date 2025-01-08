@@ -12,6 +12,18 @@ use App\Livewire\Pages\Admin\Diskon\DiskonCode\ModalDiskonCode;
 #[On('management-diskon-code')]
 class DiskonCode extends Component
 {
+    public $perPage = 6;
+    public $tatalData;
+
+    public function mount()
+    {
+        $this->tatalData = DiskonCodeModel::count();
+    }
+
+    public function loadMore()
+    {
+        $this->perPage += 6;
+    }
 
     public function editDiskonCode($id)
     {
@@ -44,7 +56,7 @@ class DiskonCode extends Component
     public function render()
     {
         return view('livewire.pages.admin.diskon.diskon-code.diskon-code', [
-            'diskonCodes' => DiskonCodeModel::latest()->get()
+            'diskonCodes' => DiskonCodeModel::latest()->take($this->perPage)->get()
         ]);
     }
 }

@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use Illuminate\Validation\ValidationException;
 use App\Models\Diskon\DiskonCode as DiskonCodeModel;
 use App\Livewire\Pages\Admin\Diskon\DiskonCode\DiskonCode;
+use Livewire\Attributes\On;
 
 #[Layout('layouts.admin-layout', ['title' => 'Management Diskon Code'])]
 class ModalDiskonCode extends Component
@@ -34,7 +35,7 @@ class ModalDiskonCode extends Component
             // cek status diskon code
             $status = $isToday ? 'aktif' : 'tidak aktif';
     
-            $diskon = DiskonCodeModel::create([
+            DiskonCodeModel::create([
                 'code' => $this->code,
                 'description' => $this->description,
                 'discount' => $this->discount,
@@ -60,6 +61,73 @@ class ModalDiskonCode extends Component
             ]);
         }
     }
+
+    // edit diskon code
+    #[On('editDiskonCode')]
+    public function editDiskonCode($id)
+    {
+        $diskonCode = DiskonCodeModel::find($id);
+
+        $this->code = $diskonCode->code;
+        $this->description = $diskonCode->description;
+        $this->discount = $diskonCode->discount;
+        $this->start_date = $diskonCode->start_date;
+        $this->end_date = $diskonCode->end_date;
+        $this->penggunaan = $diskonCode->penggunaan;
+
+        $this->diskonId = $id;
+        $this->isEdit = true;
+
+        $this->dispatch('modal-diskon-code');
+    }
+
+    public function updateDiskonCode()
+    {
+        try {
+            $this->validate([
+                'code' => 'required|string|unique:diskon_codes,code,' . $this->diskonId,
+                'description' => 'required',
+                'discount' => 'required|numeric',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'penggunaan' => 'required|integer',
+            ]);
+
+            $diskonCode = DiskonCodeModel::find($this->diskonId);
+
+            $today = now()->format('Y-m-d');
+            $isToday = $this->start_date === $today;
+
+            $status = $isToday ? 'aktif' : 'tidak aktif';
+            
+            $diskonCode->update([
+                'code' => $this->code,
+                'description' => $this->description,
+                'discount' => $this->discount,
+                'start_date' => $this->start_date,
+                'end_date' => $this->end_date,
+                'penggunaan' => $this->penggunaan,
+                'status' => $status,
+            ]);
+            
+            $this->dispatch('management-diskon-code')->to(DiskonCode::class);
+            $this->resetInput();
+            
+            $this->dispatch('notificationAdmin', [
+                'type' => 'success',
+                'message' => 'Diskon code berhasil diupdate',
+                'title' => 'Berhasil'
+            ]);
+        } catch (ValidationException $e) {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => $e->validator->errors()->first(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+    // edit diskon code
+    
     // create diskon code
     public function render()
     {
@@ -67,7 +135,7 @@ class ModalDiskonCode extends Component
     }
 
     // reset input
-    private function resetInput()
+    public function resetInput()
     {
         $this->code = null;
         $this->description = null;

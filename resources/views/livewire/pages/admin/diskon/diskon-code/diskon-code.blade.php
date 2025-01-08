@@ -103,7 +103,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Kode Kadaluarsa</p>
-                        <h3 class="text-white text-2xl font-bold">1</h3>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonCodes->where('status',
+                            'kadaluarsa')->count() }}</h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full p-3">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,7 +191,7 @@
                     </div>
 
                     <div class="mt-6 flex justify-end space-x-3">
-                        <button @click="editDiscount(discount)"
+                        <button type="button" wire:click="editDiskonCode({{ $diskon->id }})"
                             class="px-3 py-1.5 text-sm text-violet-600 hover:text-violet-800 font-medium rounded-md hover:bg-violet-50">
                             Edit
                         </button>

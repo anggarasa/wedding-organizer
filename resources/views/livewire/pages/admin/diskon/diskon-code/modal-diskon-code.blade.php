@@ -18,7 +18,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $isEdit == true ? 'Edit Kode Diskon' : 'Tambah
                     Kode Diskon' }}</h3>
 
-                <form wire:submit="{{ $isEdit == true ? 'updateDiskonKode' : 'createDiskonCode' }}" class="space-y-4">
+                <form wire:submit="{{ $isEdit == true ? 'updateDiskonCode' : 'createDiskonCode' }}" class="space-y-4">
                     <div>
                         <x-input name="code" label="Kode Diskon" wire="code" placeholder="Contoh: WEDDING2024"
                             required="true" />

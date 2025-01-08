@@ -28,12 +28,8 @@ class ModalDiskonCode extends Component
                 'penggunaan' => 'required|integer',
             ]);
     
-            // cek apakah start date sama dengan hari ini
             $today = now()->format('Y-m-d');
-            $isToday = $this->start_date === $today;
-    
-            // cek status diskon code
-            $status = $isToday ? 'aktif' : 'tidak aktif';
+            $status = $this->start_date < $today ? 'aktif' : ($this->start_date === $today ? 'aktif' : 'tidak aktif');
     
             DiskonCodeModel::create([
                 'code' => $this->code,
@@ -96,9 +92,7 @@ class ModalDiskonCode extends Component
             $diskonCode = DiskonCodeModel::find($this->diskonId);
 
             $today = now()->format('Y-m-d');
-            $isToday = $this->start_date === $today;
-
-            $status = $isToday ? 'aktif' : 'tidak aktif';
+            $status = $this->start_date < $today ? 'aktif' : ($this->start_date === $today ? 'aktif' : 'tidak aktif');
             
             $diskonCode->update([
                 'code' => $this->code,

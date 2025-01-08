@@ -17,6 +17,29 @@ class DiskonCode extends Component
     {
         $this->dispatch('editDiskonCode', $id)->to(ModalDiskonCode::class);
     }
+
+    // Delete diskon kode
+    public function deleteDiskonCode($id)
+    {
+        try {
+            $diskonCode = DiskonCodeModel::find($id);
+            $diskonCode->delete();
+
+            $this->dispatch('close-modal-delete-diskon-code');
+            
+            $this->dispatch('notificationAdmin', [
+                'type' => 'success',
+                'message' => 'Code diskon berhasil dihapus!',
+                'title' => 'Sukses'
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => 'Gagal menghapus code diskon!',
+                'title' => 'Gagal'
+            ]);
+        }
+    }
     
     public function render()
     {

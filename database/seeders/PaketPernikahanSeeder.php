@@ -116,14 +116,16 @@ class PaketPernikahanSeeder extends Seeder
                 'syarat' => $paket['syarat'],
             ]);
 
-            foreach($paket['bajus'] as $baju) {
-                $newPaket->sewaBajus()->attach($baju['bajuId']);
+            if (isset($paket['bajus'])) {
+                foreach($paket['bajus'] as $baju) {
+                    $newPaket->sewaBajus()->attach($baju['bajuId']);
+                }
             }
 
             foreach($paket['images'] as $image) {
                 ImagePaketPernikahan::create([
                     'paket_pernikahan_id' => $newPaket->id,
-                    'image' => $image['image'],
+                    'path' => $image['image'],
                 ]);
             }
         }

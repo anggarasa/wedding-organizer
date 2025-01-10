@@ -1,5 +1,5 @@
 <div x-data="{
-    showDeleteModal: false,
+    showDeleteModal: null,
     selectedDiscount: null,
     searchQuery: '',
     statusFilter: 'all',
@@ -319,13 +319,57 @@
                                 class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">
                                 Edit
                             </button>
-                            <button type="button" wire:click="hapusDiskonProduct({{ $diskon->id }})"
+                            <button type="button"
+                                @click="showDeleteModal = 'modal-delete-diskon-paket_{{ $diskon->id }}'"
                                 class="inline-flex items-center gap-x-1 text-sm text-red-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">
                                 Delete
                             </button>
                         </div>
                     </td>
                 </tr>
+
+                <!-- Delete Confirmation Modal -->
+                <div x-show="showDeleteModal === 'modal-delete-diskon-paket_{{ $diskon->id }}'"
+                    @close-modal-delete-diskon-paket.window="showDeleteModal = null"
+                    class="fixed inset-0 z-50 overflow-y-auto" style="display: none">
+                    <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+                    <div class="relative flex items-center justify-center min-h-screen p-4">
+                        <div class="relative w-full max-w-md p-6 bg-white rounded-xl shadow-lg">
+                            <div class="flex items-center justify-center mb-6">
+                                <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                                        </path>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <h3 class="text-lg font-medium text-center text-gray-900 mb-4">
+                                Konfirmasi Hapus
+                            </h3>
+                            <p class="text-sm text-center text-gray-500 mb-6">
+                                Apakah Anda yakin ingin menghapus
+                                <span class="font-medium text-gray-900">{{ $diskon->name }}</span>? Tindakan
+                                ini
+                                tidak
+                                dapat dibatalkan.
+                            </p>
+
+                            <div class="flex justify-center space-x-3">
+                                <button type="button" @click="showDeleteModal = null"
+                                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                                    Batal
+                                </button>
+                                <button type="button" wire:click="deleteDiskonPaket({{ $diskon->id }})"
+                                    class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </tbody>
         </table>
@@ -346,48 +390,5 @@
                 </p>
             </div>
         </template>
-
-        <!-- Delete Confirmation Modal -->
-        <div x-show="showDeleteModal" class="fixed inset-0 z-50 overflow-y-auto"
-            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center">
-                <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-                </div>
-                <div
-                    class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                    <div class="text-center">
-                        <svg class="mx-auto h-12 w-12 text-red-500" fill="none" stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                            </path>
-                        </svg>
-
-                        <h3 class="text-lg font-medium text-gray-900 mt-4">
-                            Hapus Kode Diskon
-                        </h3>
-                        <p class="text-sm text-gray-500 mt-2">
-                            Apakah Anda yakin ingin menghapus kode diskon
-                            <span class="font-semibold" x-text="selectedDiscount?.code"></span>? Tindakan ini tidak
-                            dapat dibatalkan.
-                        </p>
-
-                        <div class="mt-6 flex justify-center space-x-3">
-                            <button type="button" @click="showDeleteModal = false"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500">
-                                Batal
-                            </button>
-                            <button type="button"
-                                class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                                Ya, Hapus
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </main>
 </div>

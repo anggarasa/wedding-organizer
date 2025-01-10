@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use App\Models\Layanan\PaketPernikahan;
 use App\Models\Diskon\DiskonPaketPernikahan as ModelDiskonPaket;
 use App\Livewire\Pages\Admin\Diskon\DiskonPaketPernikahan\DiskonPaketPernikahan;
+use Livewire\Attributes\On;
 
 #[Layout('layouts.admin-layout')]
 class ModalDiskonPaketPernikahan extends Component
@@ -69,7 +70,6 @@ class ModalDiskonPaketPernikahan extends Component
             ]);
         }
     }
-
     // Create diskon Paket
 
     // Select kebaya sewa baju

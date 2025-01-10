@@ -30,8 +30,8 @@
                     ]" />
 
                     <x-sidebar-dropdown title="Diskon" icon="fas fa-tag" :links="[
-                        ['label' => 'Diskon Code', 'url' => '/admin/layanan/sewa-baju/management'],
-                        ['label' => 'Diskon Paket Pernikahan', 'url' => '#'],
+                        ['label' => 'Diskon Code', 'url' => '/admin/diskon/diskon-code/management'],
+                        ['label' => 'Diskon Paket', 'url' => '/admin/diskon/diskon-paket/management'],
                         ['label' => 'Diskon Sewa Baju', 'url' => '#'],
                     ]" />
 
@@ -71,7 +71,7 @@
 
                     <x-sidebar-dropdown title="Diskon" icon="fas fa-tag" :links="[
                         ['label' => 'Diskon Code', 'url' => '/admin/diskon/diskon-code/management'],
-                        ['label' => 'Diskon Paket Pernikahan', 'url' => '#'],
+                        ['label' => 'Diskon Paket', 'url' => '/admin/diskon/diskon-paket/management'],
                         ['label' => 'Diskon Sewa Baju', 'url' => '#'],
                     ]" />
 

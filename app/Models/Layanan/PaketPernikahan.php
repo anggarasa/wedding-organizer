@@ -15,7 +15,18 @@ class PaketPernikahan extends Model
         'layanan_tambahan',
         'syarat',
         'price',
+        'diskon_paket_pernikahan_id',
+        'discount',
+        'final_price',
     ];
+
+    // Mengatur harga setelah diskon
+    public function setDiscountPercentageAttribute($value)
+    {
+        $this->attributes['discount'] = $value;
+        $this->attributes['final_price'] = $this->attributes['price'] - ($this->attributes['price'] * $value / 100);
+    }
+    // Mengatur harga setelah diskon
 
     // Hash many
     public function imagePaketPernikahans()

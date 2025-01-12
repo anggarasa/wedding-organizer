@@ -72,7 +72,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Total Diskon Aktif</p>
-                        <h3 class="text-white text-2xl font-bold">2</h3>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonPakets->where('status', 'aktif')->count() }}
+                        </h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full p-3">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,7 +88,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Total Diskon Tidak Aktif</p>
-                        <h3 class="text-white text-2xl font-bold">77</h3>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonPakets->where('status',
+                            'tidak aktif')->count() }}</h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full p-3">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +104,8 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Diskon Paket Kadaluarsa</p>
-                        <h3 class="text-white text-2xl font-bold">1</h3>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonPakets->where('status',
+                            'kadaluarsa')->count() }}</h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full py-2 px-4">
                         <i class="fas fa-x text-2xl text-white"></i>
@@ -197,7 +200,7 @@
                 </tr>
             </thead>
 
-            <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+            <tbody class="divide-y divide-gray-200 bg-white">
                 @foreach ($diskonPakets as $diskon)
                 <tr>
                     <td class="size-px whitespace-nowrap">
@@ -207,7 +210,7 @@
                         </div>
                     </td>
 
-                    <td class="size-px whitespace-nowrap" x-data="{ modalId: null }">
+                    <td class="h-px w-52 whitespace-nowrap" x-data="{ modalId: null }">
                         <a class="block relative z-10 cursor-pointer"
                             @click="modalId = 'diskon-paket-detail_{{ $diskon->id }}'">
                             <div class="px-6 py-2 flex -space-x-2">
@@ -315,13 +318,15 @@
 
                     <td class="size-px whitespace-nowrap">
                         <div class="px-6 py-1.5 space-x-4">
-                            <button type="button" wire:click="editDiskonProduct({{ $diskon->id }})"
-                                class="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">
+                            <button type="button" wire:click="editDiskonPaket({{ $diskon->id }})"
+                                class="inline-flex items-center px-3 py-1 text-sm text-violet-600 bg-violet-100 rounded-lg hover:bg-violet-200">
+                                <i class="fa-regular fa-pen-to-square text-base mr-1"></i>
                                 Edit
                             </button>
                             <button type="button"
                                 @click="showDeleteModal = 'modal-delete-diskon-paket_{{ $diskon->id }}'"
-                                class="inline-flex items-center gap-x-1 text-sm text-red-600 decoration-2 hover:underline focus:outline-none focus:underline font-medium">
+                                class="inline-flex items-center px-3 py-1 text-sm text-red-600 bg-red-100 rounded-lg hover:bg-red-200">
+                                <i class="fa-regular fa-trash-can text-base mr-1"></i>
                                 Delete
                             </button>
                         </div>

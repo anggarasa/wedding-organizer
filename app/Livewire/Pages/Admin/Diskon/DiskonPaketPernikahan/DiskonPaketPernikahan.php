@@ -11,6 +11,10 @@ use Livewire\Component;
 #[On('management-diskon-paket')]
 class DiskonPaketPernikahan extends Component
 {
+    public function editDiskonPaket($id)
+    {
+        $this->dispatch('editDiskonPaket', $id)->to(ModalDiskonPaketPernikahan::class);
+    }
 
     // hapus diskon paket pernikahan
     public function deleteDiskonPaket($id)

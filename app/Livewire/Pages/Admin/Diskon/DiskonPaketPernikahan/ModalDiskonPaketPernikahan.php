@@ -37,7 +37,7 @@ class ModalDiskonPaketPernikahan extends Component
             ]);
 
             $today = now()->format('Y-m-d');
-            $status = $this->start_date < $today ? 'aktif' : ($this->start_date === $today ? 'aktif' : 'tidak aktif');
+            $status = ($this->start_date < $today && $this->end_date > $today) || ($this->start_date === $today && $this->end_date > $today) ? 'aktif' : ($this->start_date > $today ? 'tidak aktif' : 'kadaluarsa');
 
             $diskon = ModelDiskonPaket::create([
                 'name' => $this->name,
@@ -70,12 +70,80 @@ class ModalDiskonPaketPernikahan extends Component
             ]);
         }
     }
-    // Create diskon Paket
 
-    // Select kebaya sewa baju
+    // Edit diskon paket pernikahan
+    #[On('editDiskonPaket')]
+    public function editDiskonPaket($id)
+    {
+        $diskon = ModelDiskonPaket::with(['paketPernikahans', 'paketPernikahans.imagePaketPernikahans'])->findOrFail($id);
+
+        $this->diskonPaketId = $diskon->id;
+        $this->name = $diskon->name;
+        $this->discount = $diskon->discount;
+        $this->start_date = $diskon->start_date;
+        $this->end_date = $diskon->end_date;
+        $this->selectPakets = $diskon->paketPernikahans->pluck('id')->toArray();
+        $this->isEdit = true;
+        $this->updatedSelectedPaket();
+
+        $this->dispatch('modal-diskon-paket');
+    }
+
+    // Update diskon paket pernikahan
+    public function updateDiskonPaket()
+    {
+        try {
+            $this->validate([
+                'name' => 'required',
+                'discount' => 'required|numeric|min:1|max:100',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'selectPakets' => 'required|array|min:1',
+            ]);
+
+            $diskon = ModelDiskonPaket::findOrFail($this->diskonPaketId);
+            $today = now()->format('Y-m-d');
+            $status = ($this->start_date < $today && $this->end_date > $today) || ($this->start_date === $today && $this->end_date > $today) ? 'aktif' : ($this->start_date > $today ? 'tidak aktif' : 'kadaluarsa');
+
+            $diskon->update([
+                'name' => $this->name,
+                'discount' => $this->discount,
+                'status' => $status,
+                'start_date' => $this->start_date,
+                'end_date' => $this->end_date,
+            ]);
+
+            PaketPernikahan::where('diskon_paket_pernikahan_id', $diskon->id)->update([
+                'diskon_paket_pernikahan_id' => null,
+                'discount' => null,
+            ]);
+
+            foreach ($this->selectPakets as $paketId) {
+                PaketPernikahan::where('id', $paketId)->update([
+                    'diskon_paket_pernikahan_id' => $diskon->id,
+                    'discount' => $this->discount,
+                ]);
+            }
+
+            $this->dispatch('management-diskon-paket')->to(DiskonPaketPernikahan::class);
+            $this->resetInput();
+
+            $this->dispatch('notificationAdmin', [
+                'type' => 'success',
+                'message' => 'Berhasil memperbarui diskon paket pernikahan',
+                'title' => 'Sukses',
+            ]);
+        } catch (\Exception $e) {
+            $this->dispatch('notificationAdmin', [
+                'type' => 'error',
+                'message' => $e->getMessage(),
+                'title' => 'Gagal'
+            ]);
+        }
+    }
+
     public function updatedSelectedPaket()
     {
-        // Ambil detail semua kebaya berdasarkan ID yang dipilih
         $this->selectPaketDetail = PaketPernikahan::whereIn('id', $this->selectPakets)->get();
     }
 
@@ -91,8 +159,7 @@ class ModalDiskonPaketPernikahan extends Component
         // Perbarui detail kebaya
         $this->updatedSelectedPaket();
     }
-    // Select kebaya sewa baju
-    
+
     public function render()
     {
         return view('livewire.pages.admin.diskon.diskon-paket-pernikahan.modal-diskon-paket-pernikahan', [
@@ -100,7 +167,6 @@ class ModalDiskonPaketPernikahan extends Component
         ]);
     }
 
-    // Reset input 
     public function resetInput()
     {
         $this->reset(['name', 'discount', 'start_date', 'end_date', 'diskonPaketId']);
@@ -110,4 +176,15 @@ class ModalDiskonPaketPernikahan extends Component
 
         $this->dispatch('close-modal-diskon-paket');
     }
+
+    protected $messages = [
+        'name.required' => 'Nama diskon paket pernikahan wajib diisi.',
+        'discount.required' => 'Diskon wajib diisi.',
+        'discount.numeric' => 'Diskon harus berupa angka.',
+        'discount.min' => 'Diskon minimal 1.',
+        'discount.max' => 'Diskon maksimal 100.',
+        'start_date.required' => 'Tanggal mulai wajib diisi.',
+        'end_date.required' => 'Tanggal akhir wajib diisi.',
+        'selectPakets.required' => 'Paket pernikahan wajib dipilih.',
+    ];
 }

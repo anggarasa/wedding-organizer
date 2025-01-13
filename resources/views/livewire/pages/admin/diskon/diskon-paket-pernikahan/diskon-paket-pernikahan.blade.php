@@ -380,6 +380,10 @@
         </table>
         <!-- End Table -->
 
+        <!-- Pagination -->
+        {{ $diskonPakets->links('vendor.pagination.tailwind') }}
+        <!-- Pagination -->
+
         <!-- Empty State -->
         <template x-if="filteredDiscounts.length === 0">
             <div class="text-center py-12">

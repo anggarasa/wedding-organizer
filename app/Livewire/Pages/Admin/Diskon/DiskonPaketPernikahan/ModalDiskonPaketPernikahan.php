@@ -48,11 +48,11 @@ class ModalDiskonPaketPernikahan extends Component
             ]);
 
             foreach ($this->selectPakets as $paketId) {
-                PaketPernikahan::where('id', $paketId)->update([
-                    'diskon_paket_pernikahan_id' => $diskon->id,
-                    'discount' => $this->discount,
-                ]);
-            }
+                $paket = PaketPernikahan::find($paketId);
+                $paket->discount = $this->discount;  // Memicu mutator
+                $paket->diskon_paket_pernikahan_id = $diskon->id;
+                $paket->save();  // Simpan perubahan
+            }            
 
             $this->dispatch('management-diskon-paket')->to(DiskonPaketPernikahan::class);
             $this->resetInput();
@@ -119,11 +119,11 @@ class ModalDiskonPaketPernikahan extends Component
             ]);
 
             foreach ($this->selectPakets as $paketId) {
-                PaketPernikahan::where('id', $paketId)->update([
-                    'diskon_paket_pernikahan_id' => $diskon->id,
-                    'discount' => $this->discount,
-                ]);
-            }
+                $paket = PaketPernikahan::find($paketId);
+                $paket->discount = $this->discount;  // Memicu mutator
+                $paket->diskon_paket_pernikahan_id = $diskon->id;
+                $paket->save();  // Simpan perubahan
+            }            
 
             $this->dispatch('management-diskon-paket')->to(DiskonPaketPernikahan::class);
             $this->resetInput();

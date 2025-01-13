@@ -21,10 +21,10 @@ class PaketPernikahan extends Model
     ];
 
     // Mengatur harga setelah diskon
-    public function setDiscountPercentageAttribute($value)
+    public function setDiscountAttribute($value)
     {
         $this->attributes['discount'] = $value;
-        $this->attributes['final_price'] = $this->attributes['price'] - ($this->attributes['price'] * $value / 100);
+        $this->attributes['final_price'] = $this->price - ($this->price * $value / 100);
     }
     // Mengatur harga setelah diskon
 

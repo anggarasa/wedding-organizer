@@ -260,7 +260,7 @@
                                     <div class="border rounded-lg p-4 flex items-center">
                                         @foreach ($baju->imageSewaBajus->take(1) as $image)
                                         <img class="w-16 h-16 rounded-full object-cover mr-4"
-                                            src="{{ asset('storage/baju-pernikahan/' . $image->image) }}"
+                                            src="{{ asset('storage/sewa-baju/' . $image->image) }}"
                                             alt="{{ $baju->name }}">
                                         @endforeach
                                         <div>
@@ -335,7 +335,7 @@
 
                 <!-- Delete Confirmation Modal -->
                 <div x-show="showDeleteModal === 'modal-delete-diskon-baju_{{ $diskon->id }}'"
-                    @close-modal-delete-diskon-paket.window="showDeleteModal = null"
+                    @close-modal-delete-diskon-baju.window="showDeleteModal = null"
                     class="fixed inset-0 z-50 overflow-y-auto" style="display: none">
                     <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
                     <div class="relative flex items-center justify-center min-h-screen p-4">

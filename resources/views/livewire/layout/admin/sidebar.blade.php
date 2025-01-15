@@ -32,7 +32,7 @@
                     <x-sidebar-dropdown title="Diskon" icon="fas fa-tag" :links="[
                         ['label' => 'Diskon Code', 'url' => '/admin/diskon/diskon-code/management'],
                         ['label' => 'Diskon Paket', 'url' => '/admin/diskon/diskon-paket/management'],
-                        ['label' => 'Diskon Sewa Baju', 'url' => '#'],
+                        ['label' => 'Diskon Sewa Baju', 'url' => '/admin/diskon/diskon-sewa-baju/management'],
                     ]" />
 
                     <li class="mb-2">
@@ -72,7 +72,7 @@
                     <x-sidebar-dropdown title="Diskon" icon="fas fa-tag" :links="[
                         ['label' => 'Diskon Code', 'url' => '/admin/diskon/diskon-code/management'],
                         ['label' => 'Diskon Paket', 'url' => '/admin/diskon/diskon-paket/management'],
-                        ['label' => 'Diskon Sewa Baju', 'url' => '#'],
+                        ['label' => 'Diskon Sewa Baju', 'url' => '/admin/diskon/diskon-sewa-baju/management'],
                     ]" />
 
                     <li class="mb-2">

@@ -3,6 +3,7 @@
 namespace App\Models\Layanan;
 
 use App\Models\Images\ImageSewaBaju;
+use App\Models\Diskon\DiskonSewaBaju;
 use Illuminate\Database\Eloquent\Model;
 
 class SewaBaju extends Model
@@ -14,8 +15,11 @@ class SewaBaju extends Model
         'price',
         'status',
         'ukuran',
+        'discount',
         'category',
+        'final_price',
         'description',
+        'diskon_sewa_baju_id',
     ];
 
     // Hash many Start
@@ -24,6 +28,13 @@ class SewaBaju extends Model
         return $this->hasMany(ImageSewaBaju::class);
     }
     // Hash many End
+
+    // Belongs to
+    public function diskonSewaBaju()
+    {
+        return $this->belongsTo(DiskonSewaBaju::class);
+    }
+    // Belongs to
 
     // Many to many
     public function paketPernikahans()

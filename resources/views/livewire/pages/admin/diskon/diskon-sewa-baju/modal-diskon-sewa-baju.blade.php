@@ -18,7 +18,7 @@
                 <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $isEdit == true ? 'Edit' : 'Tambah' }} Diskon
                     Paket</h3>
 
-                <form wire:submit="{{ $isEdit == true ? 'updateDiskonPaket' : 'createDiskonSewaBaju' }}"
+                <form wire:submit="{{ $isEdit == true ? 'updateDiskonSewaBaju' : 'createDiskonSewaBaju' }}"
                     class="space-y-4">
                     <div>
                         <x-input name="name" label="Nama Diskon" wire="name" placeholder="Contoh: Diskon Akhir Bulan"

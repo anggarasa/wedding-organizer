@@ -318,7 +318,7 @@
 
                     <td class="size-px whitespace-nowrap">
                         <div class="px-6 py-1.5 space-x-4">
-                            <button type="button" wire:click="editDiskonPaket({{ $diskon->id }})"
+                            <button type="button" wire:click="editDiskonSewaBaju({{ $diskon->id }})"
                                 class="inline-flex items-center px-3 py-1 text-sm text-violet-600 bg-violet-100 rounded-lg hover:bg-violet-200">
                                 <i class="fa-regular fa-pen-to-square text-base mr-1"></i>
                                 Edit

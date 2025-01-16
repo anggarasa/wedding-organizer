@@ -12,6 +12,13 @@ use Livewire\Component;
 class DiskonSewaBaju extends Component
 {
 
+    // Edit Diskon Sewa Baju
+    public function editDiskonSewaBaju($id)
+    {
+        $this->dispatch('editDiskonSewaBaju', $id)->to(ModalDiskonSewaBaju::class);
+    }
+    // Edit Diskon Sewa Baju
+
     // Delete diskon sewa baju
     public function deleteDiskonSewaBaju($id)
     {

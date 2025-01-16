@@ -72,7 +72,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Total Diskon Aktif</p>
-                        <h3 class="text-white text-2xl font-bold">{{ $diskonPakets->where('status', 'aktif')->count() }}
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonAktif }}
                         </h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full p-3">
@@ -88,8 +88,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Total Diskon Tidak Aktif</p>
-                        <h3 class="text-white text-2xl font-bold">{{ $diskonPakets->where('status',
-                            'tidak aktif')->count() }}</h3>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonTidakAktif }}</h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full p-3">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -104,8 +103,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-white text-sm">Diskon Paket Kadaluarsa</p>
-                        <h3 class="text-white text-2xl font-bold">{{ $diskonPakets->where('status',
-                            'kadaluarsa')->count() }}</h3>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonKadaluarsa }}</h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full py-2 px-4">
                         <i class="fas fa-x text-2xl text-white"></i>

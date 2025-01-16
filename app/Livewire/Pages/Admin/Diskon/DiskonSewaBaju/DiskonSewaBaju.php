@@ -6,11 +6,13 @@ use App\Models\Diskon\DiskonSewaBaju as DiskonDiskonSewaBaju;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('layouts.admin-layout', ['title' => 'Management Diskon Sewa Baju'])]
 #[On('management-diskon-baju')]
 class DiskonSewaBaju extends Component
 {
+    use WithPagination;
 
     // Edit Diskon Sewa Baju
     public function editDiskonSewaBaju($id)
@@ -69,7 +71,10 @@ class DiskonSewaBaju extends Component
     public function render()
     {
         return view('livewire.pages.admin.diskon.diskon-sewa-baju.diskon-sewa-baju', [
-            'diskonSewaBajus' => DiskonDiskonSewaBaju::with('sewaBajus')->latest()->get()
+            'diskonSewaBajus' => DiskonDiskonSewaBaju::with(['sewaBajus', 'sewaBajus.imageSewaBajus'])->latest()->paginate(5),
+            'diskonAktif' => DiskonDiskonSewaBaju::where('status', 'aktif')->count(),
+            'diskonTidakAktif' => DiskonDiskonSewaBaju::where('status', 'tidak aktif')->count(),
+            'diskonKadaluarsa' => DiskonDiskonSewaBaju::where('status', 'kadaluarsa')->count()
         ]);
     }
 }

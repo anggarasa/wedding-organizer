@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             SewaBajuSeeder::class,
             PaketPernikahanSeeder::class,
             DiskonCodeSeeder::class,
-            DiskonPaketPernikahanSeeder::class
+            DiskonPaketPernikahanSeeder::class,
+            DiskonSewaBajuSeeder::class,
         ]);
     }
 }

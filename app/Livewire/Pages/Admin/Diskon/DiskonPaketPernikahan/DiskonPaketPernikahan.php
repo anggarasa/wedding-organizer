@@ -52,7 +52,10 @@ class DiskonPaketPernikahan extends Component
     public function render()
     {
         return view('livewire.pages.admin.diskon.diskon-paket-pernikahan.diskon-paket-pernikahan', [
-            'diskonPakets' => DiskonDiskonPaketPernikahan::with(['paketPernikahans', 'paketPernikahans.imagePaketPernikahans'])->latest()->paginate(5)
+            'diskonPakets' => DiskonDiskonPaketPernikahan::with(['paketPernikahans', 'paketPernikahans.imagePaketPernikahans'])->latest()->paginate(5),
+            'diskonAktif' => DiskonDiskonPaketPernikahan::where('status', 'aktif')->count(),
+            'diskonTidakAktif' => DiskonDiskonPaketPernikahan::where('status', 'tidak aktif')->count(),
+            'diskonKadaluarsa' => DiskonDiskonPaketPernikahan::where('status', 'kadaluarsa')->count()
         ]);
     }
 }

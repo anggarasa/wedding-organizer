@@ -24,22 +24,42 @@ class DiskonSewaBaju extends Component
     {
         try {
             $diskon = DiskonDiskonSewaBaju::find($id);
-            $diskon->delete();
 
-            // close modal delete
-            $this->dispatch('close-modal-delete-diskon-baju');
+            if ($diskon) {
+                // Reset discount dan final_price di tabel SewaBaju
+                foreach ($diskon->sewaBajus as $baju) {
+                    $baju->update([
+                        'discount' => null,
+                        'final_price' => null,
+                        'diskon_sewa_baju_id' => null, // Hapus relasi diskon
+                    ]);
+                }
 
-            // notification success
-            $this->dispatch('notificationAdmin', [
-                'type' => 'success',
-                'message' => 'Berhasil menghapus diskon sewa baju',
-                'title' => 'Sukses'
-            ]);
+                // Hapus diskon
+                $diskon->delete();
+
+                // Tutup modal delete
+                $this->dispatch('close-modal-delete-diskon-baju');
+
+                // Notifikasi sukses
+                $this->dispatch('notificationAdmin', [
+                    'type' => 'success',
+                    'message' => 'Berhasil menghapus diskon sewa baju dan menghapus pengaruhnya di produk.',
+                    'title' => 'Sukses'
+                ]);
+            } else {
+                // Notifikasi jika diskon tidak ditemukan
+                $this->dispatch('notificationAdmin', [
+                    'type' => 'error',
+                    'message' => 'Diskon tidak ditemukan.',
+                    'title' => 'Gagal'
+                ]);
+            }
         } catch (\Exception $e) {
-            // notification error
+            // Notifikasi error
             $this->dispatch('notificationAdmin', [
                 'type' => 'error',
-                'message' => 'Gagal menghapus diskon sewa baju',
+                'message' => 'Gagal menghapus diskon sewa baju.',
                 'title' => 'Gagal'
             ]);
         }

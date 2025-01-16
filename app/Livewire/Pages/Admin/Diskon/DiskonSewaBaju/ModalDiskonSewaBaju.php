@@ -46,11 +46,15 @@ class ModalDiskonSewaBaju extends Component
             ]);
 
             foreach ($this->selectBajus as $bajuId) {
-                $paket = SewaBaju::find($bajuId);
-                $paket->discount = $this->discount;  // Memicu mutator
-                $paket->diskon_sewa_baju_id = $diskon->id;
-                $paket->save();  // Simpan perubahan
-            }            
+                $baju = SewaBaju::find($bajuId);
+                $baju->diskon_sewa_baju_id = $diskon->id;
+            
+                if ($status === 'aktif') {
+                    $baju->discount = $this->discount;  // Memicu mutator
+                }
+            
+                $baju->save();  // Simpan perubahan
+            }
 
             $this->dispatch('management-diskon-baju')->to(DiskonSewaBaju::class);
             $this->resetInput();
@@ -117,12 +121,19 @@ class ModalDiskonSewaBaju extends Component
                 'discount' => null,
             ]);
 
-            foreach ($this->selectBajus as $paketId) {
-                $paket = SewaBaju::find($paketId);
-                $paket->discount = $this->discount;  // Memicu mutator
-                $paket->diskon_sewa_baju_id = $diskon->id;
-                $paket->save();  // Simpan perubahan
-            }            
+            foreach ($this->selectBajus as $bajuId) {
+                $baju = SewaBaju::find($bajuId);
+                $baju->diskon_sewa_baju_id = $diskon->id;
+            
+                if ($status === 'aktif') {
+                    $baju->discount = $this->discount;  // Memicu mutator
+                } else {
+                    $baju->discount = null;  // Reset jika tidak aktif
+                    $baju->final_price = null;  // Kembalikan harga normal
+                }
+            
+                $baju->save();  // Simpan perubahan
+            }
 
             $this->dispatch('management-diskon-baju')->to(DiskonSewaBaju::class);
             $this->resetInput();

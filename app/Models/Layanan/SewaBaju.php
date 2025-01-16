@@ -22,6 +22,14 @@ class SewaBaju extends Model
         'diskon_sewa_baju_id',
     ];
 
+    // Mengatur harga setelah diskon
+    public function setDiscountAttribute($value)
+    {
+        $this->attributes['discount'] = $value;
+        $this->attributes['final_price'] = $this->price - ($this->price * $value / 100);
+    }
+    // Mengatur harga setelah diskon
+
     // Hash many Start
     public function imageSewaBajus()
     {

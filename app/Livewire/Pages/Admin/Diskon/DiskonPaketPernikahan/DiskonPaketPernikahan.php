@@ -28,6 +28,7 @@ class DiskonPaketPernikahan extends Component
             $diskonPaket->paketPernikahans()->update([
                 'diskon_paket_pernikahan_id' => null,
                 'discount' => null,
+                'final_price' => null,
             ]);
             $diskonPaket->delete();
 

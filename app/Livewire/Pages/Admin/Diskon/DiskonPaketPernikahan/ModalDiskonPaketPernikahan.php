@@ -49,10 +49,14 @@ class ModalDiskonPaketPernikahan extends Component
 
             foreach ($this->selectPakets as $paketId) {
                 $paket = PaketPernikahan::find($paketId);
-                $paket->discount = $this->discount;  // Memicu mutator
                 $paket->diskon_paket_pernikahan_id = $diskon->id;
+            
+                if ($status === 'aktif') {
+                    $paket->discount = $this->discount;  // Memicu mutator
+                }
+            
                 $paket->save();  // Simpan perubahan
-            }            
+            }
 
             $this->dispatch('management-diskon-paket')->to(DiskonPaketPernikahan::class);
             $this->resetInput();
@@ -120,10 +124,17 @@ class ModalDiskonPaketPernikahan extends Component
 
             foreach ($this->selectPakets as $paketId) {
                 $paket = PaketPernikahan::find($paketId);
-                $paket->discount = $this->discount;  // Memicu mutator
                 $paket->diskon_paket_pernikahan_id = $diskon->id;
+            
+                if ($status === 'aktif') {
+                    $paket->discount = $this->discount;  // Memicu mutator
+                } else {
+                    $paket->discount = null;  // Reset jika tidak aktif
+                    $paket->final_price = null;  // Kembalikan harga normal
+                }
+            
                 $paket->save();  // Simpan perubahan
-            }            
+            }
 
             $this->dispatch('management-diskon-paket')->to(DiskonPaketPernikahan::class);
             $this->resetInput();

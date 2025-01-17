@@ -58,6 +58,7 @@ class DiskonCode extends Component
         return view('livewire.pages.admin.diskon.diskon-code.diskon-code', [
             'diskonCodes' => DiskonCodeModel::latest()->take($this->perPage)->get(),
             'diskonAktif' => DiskonCodeModel::where('status', 'aktif')->count(),
+            'diskonTidakAktif' => DiskonCodeModel::where('status', 'tidak aktif')->count(),
             'diskonKadaluarsa' => DiskonCodeModel::where('status', 'kadaluarsa')->count()
         ]);
     }

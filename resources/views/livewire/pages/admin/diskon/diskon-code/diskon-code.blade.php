@@ -87,8 +87,8 @@
             <div class="bg-gradient-to-r from-pink-500 to-pink-600 rounded-lg shadow-lg p-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-white text-sm">Total Penggunaan</p>
-                        <h3 class="text-white text-2xl font-bold">77</h3>
+                        <p class="text-white text-sm">Diskon Tidak Aktif</p>
+                        <h3 class="text-white text-2xl font-bold">{{ $diskonTidakAktif }}</h3>
                     </div>
                     <div class="bg-white bg-opacity-30 rounded-full p-3">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

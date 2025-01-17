@@ -9,4 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 
-Schedule::command('update:diskon-status')->dailyAt('23:59')->evenInMaintenanceMode();
+Schedule::command('update:diskon-status')->dailyAt('19:39')->evenInMaintenanceMode();

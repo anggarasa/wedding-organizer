@@ -2,11 +2,12 @@
 
 namespace App\Livewire\Pages\Admin\Diskon\DiskonPaketPernikahan;
 
-use App\Models\Diskon\DiskonPaketPernikahan as DiskonDiskonPaketPernikahan;
-use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
+use Livewire\Attributes\Layout;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Diskon\DiskonPaketPernikahan as DiskonDiskonPaketPernikahan;
 
 #[Layout('layouts.admin-layout', ['title' => 'Management Diskon Paket'])]
 #[On('management-diskon-paket')]
@@ -48,11 +49,21 @@ class DiskonPaketPernikahan extends Component
         }
     }
     // hapus diskon paket pernikahan
+
+    // fitur search diskon paket pernikahan
+    public $searchDiskon = '';
+    public $searchStatus = '';
+    // fitur search diskon paket pernikahan
     
     public function render()
     {
-        return view('livewire.pages.admin.diskon.diskon-paket-pernikahan.diskon-paket-pernikahan', [
-            'diskonPakets' => DiskonDiskonPaketPernikahan::with(['paketPernikahans', 'paketPernikahans.imagePaketPernikahans'])->latest()->paginate(5),
+        $diskonPakets = DiskonDiskonPaketPernikahan::with(['paketPernikahans', 'paketPernikahans.imagePaketPernikahans'])
+        ->when($this->searchDiskon !== '', fn(Builder $query) => $query->where('name', 'like', '%' . $this->searchDiskon . '%'))
+        ->when($this->searchDiskon !== '', fn(Builder $query) => $query->orWhere('discount', 'like', '%' . $this->searchDiskon . '%'))
+        ->when($this->searchStatus !== '', fn(Builder $query) => $query->where('status', $this->searchStatus))
+        ->latest()->paginate(5);;
+
+        return view('livewire.pages.admin.diskon.diskon-paket-pernikahan.diskon-paket-pernikahan', compact('diskonPakets'), [
             'diskonAktif' => DiskonDiskonPaketPernikahan::where('status', 'aktif')->count(),
             'diskonTidakAktif' => DiskonDiskonPaketPernikahan::where('status', 'tidak aktif')->count(),
             'diskonKadaluarsa' => DiskonDiskonPaketPernikahan::where('status', 'kadaluarsa')->count()

@@ -119,7 +119,7 @@
         <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div class="flex flex-col sm:flex-row gap-4">
                 <div class="relative">
-                    <input type="text" x-model="searchQuery" placeholder="Cari kode diskon..."
+                    <input type="text" wire:model.live="searchCode" placeholder="Cari kode diskon..."
                         class="w-full sm:w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent" />
                     <svg class="w-5 h-5 text-gray-500 absolute left-3 top-2.5" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -128,11 +128,12 @@
                     </svg>
                 </div>
 
-                <select x-model="statusFilter"
+                <select wire:model.live="searchStatus"
                     class="w-full sm:w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-transparent">
-                    <option value="all">Semua Status</option>
-                    <option value="active">Aktif</option>
-                    <option value="expired">Kadaluarsa</option>
+                    <option value="">Semua Status</option>
+                    <option value="aktif">Aktif</option>
+                    <option value="tidak aktif">Tidak Aktif</option>
+                    <option value="kadaluarsa">Kadaluarsa</option>
                 </select>
             </div>
 

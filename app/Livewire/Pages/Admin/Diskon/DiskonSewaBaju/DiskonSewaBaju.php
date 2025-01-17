@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Admin\Diskon\DiskonSewaBaju;
 
 use App\Models\Diskon\DiskonSewaBaju as DiskonDiskonSewaBaju;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -68,10 +69,20 @@ class DiskonSewaBaju extends Component
     }
     // Delete diskon sewa baju
     
+    // fitur search diskon sewa baju
+    public $searchDiskon = '';
+    public $searchStatus = '';
+    // fitur search diskon sewa baju
+    
     public function render()
     {
-        return view('livewire.pages.admin.diskon.diskon-sewa-baju.diskon-sewa-baju', [
-            'diskonSewaBajus' => DiskonDiskonSewaBaju::with(['sewaBajus', 'sewaBajus.imageSewaBajus'])->latest()->paginate(5),
+        $diskonSewaBajus = DiskonDiskonSewaBaju::with(['sewaBajus', 'sewaBajus.imageSewaBajus'])
+        ->when($this->searchDiskon !== '', fn(Builder $query) => $query->where('name', 'like', '%' . $this->searchDiskon . '%'))
+        ->when($this->searchDiskon !== '', fn(Builder $query) => $query->orWhere('discount', 'like', '%' . $this->searchDiskon . '%'))
+        ->when($this->searchStatus !== '', fn(Builder $query) => $query->where('status', $this->searchStatus))
+        ->latest()->paginate(5);
+        
+        return view('livewire.pages.admin.diskon.diskon-sewa-baju.diskon-sewa-baju', compact('diskonSewaBajus'), [
             'diskonAktif' => DiskonDiskonSewaBaju::where('status', 'aktif')->count(),
             'diskonTidakAktif' => DiskonDiskonSewaBaju::where('status', 'tidak aktif')->count(),
             'diskonKadaluarsa' => DiskonDiskonSewaBaju::where('status', 'kadaluarsa')->count()

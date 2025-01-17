@@ -7,6 +7,7 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Layout;
 use App\Models\Diskon\DiskonCode as DiskonCodeModel;
 use App\Livewire\Pages\Admin\Diskon\DiskonCode\ModalDiskonCode;
+use Illuminate\Database\Eloquent\Builder;
 
 #[Layout('layouts.admin-layout', ['title' => 'Management Diskon Code'])]
 #[On('management-diskon-code')]
@@ -52,11 +53,27 @@ class DiskonCode extends Component
             ]);
         }
     }
+
+    // Fitur Search diskon code
+    public $searchCode = '';
+    public $searchStatus = '';
+    // Fitur Search diskon code
     
     public function render()
     {
-        return view('livewire.pages.admin.diskon.diskon-code.diskon-code', [
-            'diskonCodes' => DiskonCodeModel::latest()->take($this->perPage)->get(),
+        $diskonCodes = DiskonCodeModel::when($this->searchCode !== '', function ($query) {
+            $query->where(function ($q) {
+                $q->where('code', 'like', '%' . $this->searchCode . '%')
+                ->orWhere('description', 'like', '%' . $this->searchCode . '%')
+                ->orWhere('discount', 'like', '%' . $this->searchCode . '%');
+            });
+        })
+        ->when($this->searchStatus !== '', fn(Builder $query) => $query->where('status', $this->searchStatus))
+        ->latest()
+        ->take($this->perPage)
+        ->get();
+
+        return view('livewire.pages.admin.diskon.diskon-code.diskon-code', compact('diskonCodes'), [
             'diskonAktif' => DiskonCodeModel::where('status', 'aktif')->count(),
             'diskonTidakAktif' => DiskonCodeModel::where('status', 'tidak aktif')->count(),
             'diskonKadaluarsa' => DiskonCodeModel::where('status', 'kadaluarsa')->count()

@@ -9,13 +9,10 @@ Route::view('/Galery', 'welcome.galery', ['title' => 'Galery']);
 Route::view('/Kontak', 'welcome.kontak', ['title' => 'Kontak']);
 Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified', 'role:user'])
-    ->name('dashboard');
-
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/admin.php';
+require __DIR__.'/user.php';

@@ -11,7 +11,9 @@ use Livewire\Component;
 #[Layout('layouts.app', ['title' => 'Home'])]
 class Dashboard extends Component
 {
-    public Collection $rekomendasi;
+    public Collection $allRekomendasi;
+    public $rekomendasi;
+    public $itemsToShow = 10;
 
     public function mount() 
     {
@@ -23,7 +25,8 @@ class Dashboard extends Component
                 'price' => $item->price,
                 'images' => $item->imagePaketPernikahans,
             ];
-        });;
+        });
+
         $baju = SewaBaju::with(['imageSewaBajus'])->get()->map(function ($item) {
             return [
                 'id' => $item->id,
@@ -32,9 +35,16 @@ class Dashboard extends Component
                 'price' => $item->price,
                 'images' => $item->imageSewaBajus,
             ];
-        });;
+        });
 
-        $this->rekomendasi = $paket->concat($baju)->shuffle();
+        $this->allRekomendasi = $paket->concat($baju)->shuffle();
+        $this->rekomendasi = $this->allRekomendasi->take($this->itemsToShow);
+    }
+
+    public function showMore()
+    {
+        $this->itemsToShow += 10;
+        $this->rekomendasi = $this->allRekomendasi->take($this->itemsToShow);
     }
     
     public function render()

@@ -122,11 +122,19 @@
                 </div>
                 <div class="p-4">
                     <h3 class="font-semibold mb-2 truncate">{{ $item['name'] }}</h3>
-                    <div class="text-violet-600 font-bold mb-2">
+                    <div class="flex flex-col mb-2">
+                        <div class="text-violet-600 font-bold mb-2">
+                            @if ($item['discount'] && $item['finalPrice'] !== null)
+                            Rp {{ number_format($item['finalPrice'],0,',','.') }}
+                            @else
+                            Rp {{ number_format($item['price'],0,',','.') }}
+                            @endif
+                        </div>
+
                         @if ($item['discount'] && $item['finalPrice'] !== null)
-                        Rp {{ number_format($item['finalPrice'],0,',','.') }}
-                        @else
-                        Rp {{ number_format($item['price'],0,',','.') }}
+                        <span class="text-gray-400 line-through text-sm">
+                            {{ number_format($item['price'],0,',','.') }}
+                        </span>
                         @endif
                     </div>
                     <div class="flex items-center justify-between">

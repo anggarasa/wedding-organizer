@@ -24,6 +24,8 @@ class Dashboard extends Component
                 'name' => $item->name,
                 'price' => $item->price,
                 'images' => $item->imagePaketPernikahans,
+                'discount' => $item->discount,
+                'finalPrice' => $item->final_price,
             ];
         });
 
@@ -34,6 +36,8 @@ class Dashboard extends Component
                 'name' => $item->name,
                 'price' => $item->price,
                 'images' => $item->imageSewaBajus,
+                'discount' => $item->discount,
+                'finalPrice' => $item->final_price,
             ];
         });
 

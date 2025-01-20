@@ -113,10 +113,22 @@
 
                     <img src="{{ asset($imagePath) }}" alt="{{ $item['name'] }}"
                         class="h-48 w-full object-cover rounded-t-xl">
+
+                    @if ($item['discount'] && $item['finalPrice'] !== null)
+                    <div class="absolute top-2 left-2 bg-violet-600 text-white px-2 py-1 rounded-lg text-sm">
+                        -{{ number_format($item['discount'], 0, ',', '.') }}%
+                    </div>
+                    @endif
                 </div>
                 <div class="p-4">
                     <h3 class="font-semibold mb-2 truncate">{{ $item['name'] }}</h3>
-                    <div class="text-violet-600 font-bold mb-2">Rp {{ number_format($item['price'],0,',','.') }}</div>
+                    <div class="text-violet-600 font-bold mb-2">
+                        @if ($item['discount'] && $item['finalPrice'] !== null)
+                        Rp {{ number_format($item['finalPrice'],0,',','.') }}
+                        @else
+                        Rp {{ number_format($item['price'],0,',','.') }}
+                        @endif
+                    </div>
                     <div class="flex items-center justify-between">
                         <div class="flex items-center space-x-1 text-yellow-400">
                             <i class="fas fa-star"></i>

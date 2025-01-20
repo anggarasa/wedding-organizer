@@ -130,7 +130,7 @@
         </div>
         <!-- Show More Button -->
         @if (count($rekomendasi) < $allRekomendasi->count())
-            <div class="mt-6 text-center">
+            <div class="my-9 text-center">
                 <button wire:click="showMore" class="px-4 py-2 bg-violet-600 text-white rounded-md hover:bg-violet-700">
                     Tampilkan Lebih Banyak
                 </button>

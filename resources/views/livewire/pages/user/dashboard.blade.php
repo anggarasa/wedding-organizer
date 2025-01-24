@@ -121,7 +121,12 @@
                     @endif
                 </div>
                 <div class="p-4">
-                    <h3 class="font-semibold mb-2 truncate">{{ $item['name'] }}</h3>
+                    @php
+                    $detail = $item['type'] === 'paket'
+                    ? route('detail.paket', $item['slug'])
+                    : route('dashboard');
+                    @endphp
+                    <a href="{{ $detail }}" class="font-semibold mb-2">{{ Str::limit($item['name'], 20, '...') }}</a>
                     <div class="flex flex-col mb-2">
                         <div class="text-violet-600 font-bold mb-2">
                             @if ($item['discount'] && $item['finalPrice'] !== null)

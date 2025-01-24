@@ -20,6 +20,7 @@ class Dashboard extends Component
         $paket = PaketPernikahan::with(['imagePaketPernikahans'])->get()->map(function ($item) {
             return [
                 'id' => $item->id,
+                'slug' => $item->slug,
                 'type' => 'paket',
                 'name' => $item->name,
                 'price' => $item->price,
@@ -32,6 +33,7 @@ class Dashboard extends Component
         $baju = SewaBaju::with(['imageSewaBajus'])->get()->map(function ($item) {
             return [
                 'id' => $item->id,
+                'slug' => $item->slug,
                 'type' => 'baju',
                 'name' => $item->name,
                 'price' => $item->price,

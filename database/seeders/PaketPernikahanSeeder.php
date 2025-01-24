@@ -109,7 +109,7 @@ class PaketPernikahanSeeder extends Seeder
             $newPaket = PaketPernikahan::create([
                 'slug' => Str::slug($paket['name']),
                 'name' => $paket['name'],
-                'description' => $paket['name'],
+                'description' => $paket['description'],
                 'price' => $paket['price'],
                 'include' => $paket['include'],
                 'layanan_tambahan' => $paket['layananTambahan'],

@@ -1,40 +1,5 @@
 <div x-data="{
         package: {
-            id: 1,
-            name: 'Paket Gold Wedding',
-            price: 8000000,
-            description: 'Paket pernikahan premium dengan layanan lengkap untuk pengantin dan keluarga. Paket ini mencakup berbagai layanan premium untuk membuat hari pernikahan Anda menjadi sempurna.',
-            longDescription: 'Paket Gold Wedding adalah pilihan sempurna untuk pasangan yang menginginkan pengalaman pernikahan yang mewah dan tak terlupakan. Dengan layanan makeup profesional menggunakan produk premium, penataan rambut oleh stylist berpengalaman, dan berbagai layanan tambahan yang akan membuat Anda dan keluarga tampil memukau di hari istimewa Anda.',
-            includes: [
-                'Make up pengantin (HD Premium)',
-                'Touch up 3x selama acara',
-                'Hair do premium dengan hair piece',
-                'Make up dan hair do untuk 2 anggota keluarga',
-                'Make up dan hair do untuk 2 bridesmaid',
-                'Free konsultasi sebelum hari H',
-                'Free trial make up',
-                'Pemasangan bulu mata premium',
-                'Perawatan kulit dasar sebelum makeup'
-            ],
-            additionalServices: [
-                'Tambahan make up keluarga - Rp 350.000/orang',
-                'Tambahan touch up - Rp 250.000/sesi',
-                'Hair piece premium - Rp 200.000',
-                'Extension bulu mata - Rp 150.000'
-            ],
-            terms: [
-                'Booking minimal 2 bulan sebelum hari H',
-                'Down payment 50% untuk konfirmasi tanggal',
-                'Pelunasan H-7 sebelum acara',
-                'Pembatalan maksimal H-30 (DP tidak dapat dikembalikan)',
-                'Free revisi 1x saat trial makeup',
-                'Layanan touch up berlaku 6 jam'
-            ],
-            images: [
-                'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\' fill=\'none\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%238B5CF6\' opacity=\'0.1\'/%3E%3Cpath d=\'M180 140h40v40h-40z\' fill=\'%238B5CF6\' opacity=\'0.2\'/%3E%3C/svg%3E',
-                'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\' fill=\'none\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%238B5CF6\' opacity=\'0.1\'/%3E%3Cpath d=\'M180 140h40v40h-40z\' fill=\'%238B5CF6\' opacity=\'0.2\'/%3E%3C/svg%3E',
-                'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\' fill=\'none\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%238B5CF6\' opacity=\'0.1\'/%3E%3Cpath d=\'M180 140h40v40h-40z\' fill=\'%238B5CF6\' opacity=\'0.2\'/%3E%3C/svg%3E',
-            ],
             reviews: [
                 {
                     name: 'Sarah Putri',
@@ -75,17 +40,25 @@
                             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ $paket->name }}</h1>
                             @if ($paket->discount && $paket->final_price !== null)
                             <span class="px-3 py-1 bg-violet-100 text-violet-800 text-sm font-semibold rounded-full">
-                                -{{ number_format($this->discount,0,',','.') }}%
+                                -{{ number_format($paket->discount,0,',','.') }}%
                             </span>
                             @endif
                         </div>
-                        <p class="mt-2 text-violet-600 text-xl sm:text-2xl font-bold">
+                        <div class="flex gap-3 flex-wrap items-center">
+                            <p class="mt-2 text-violet-600 text-xl sm:text-2xl font-bold">
+                                @if ($paket->discount && $paket->final_price !== null)
+                                Rp <span>{{ number_format($paket->final_price,0,',','.') }}</span>
+                                @else
+                                Rp <span>{{ number_format($paket->price,0,',','.') }}</span>
+                                @endif
+                            </p>
+
                             @if ($paket->discount && $paket->final_price !== null)
-                            Rp <span>{{ number_format($paket->final_price,0,',','.') }}</span>
-                            @else
-                            Rp <span>{{ number_format($paket->price,0,',','.') }}</span>
+                            <span class="text-gray-400 line-through text-base">
+                                {{ number_format($paket->price,0,',','.') }}
+                            </span>
                             @endif
-                        </p>
+                        </div>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3">
                         <button
@@ -254,6 +227,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">
                             Baju Akad
                         </h3>
+                        @if (count($bajusAkad) > 0)
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach ($bajusAkad as $akad)
                             <div
@@ -271,6 +245,16 @@
                             </div>
                             @endforeach
                         </div>
+                        @else
+                        <div
+                            class="flex justify-center items-center h-64 bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                            <div class="text-center">
+                                <i class="fas fa-box-open fa-3x text-gray-300 mb-4"></i>
+                                <h4 class="font-medium text-gray-900 mb-2">Data Baju Akad Kosong</h4>
+                                <p class="text-sm text-gray-600">Tidak ada data baju akad yang tersedia.</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
 
                     <!-- Baju Resepsi -->
@@ -278,6 +262,7 @@
                         <h3 class="text-lg font-semibold text-gray-900 mb-4">
                             Baju Resepsi
                         </h3>
+                        @if (count($bajusResepsi) > 0)
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach ($bajusResepsi as $resepsi)
                             <div
@@ -295,6 +280,16 @@
                             </div>
                             @endforeach
                         </div>
+                        @else
+                        <div
+                            class="flex justify-center items-center h-64 bg-white rounded-lg shadow-sm overflow-hidden border border-gray-100">
+                            <div class="text-center">
+                                <i class="fas fa-box-open fa-3x text-gray-300 mb-4"></i>
+                                <h4 class="font-medium text-gray-900 mb-2">Data Baju Resepsi Kosong</h4>
+                                <p class="text-sm text-gray-600">Tidak ada data baju resepsi yang tersedia.</p>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

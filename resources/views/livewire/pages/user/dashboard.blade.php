@@ -124,9 +124,10 @@
                     @php
                     $detail = $item['type'] === 'paket'
                     ? route('detail.paket', $item['slug'])
-                    : route('dashboard');
+                    : route('detail.baju', $item['slug']);
                     @endphp
-                    <a href="{{ $detail }}" class="font-semibold mb-2">{{ Str::limit($item['name'], 20, '...') }}</a>
+                    <a href="{{ $detail }}" wire:navigate class="font-semibold mb-2">{{ Str::limit($item['name'], 20,
+                        '...') }}</a>
                     <div class="flex flex-col mb-2">
                         <div class="text-violet-600 font-bold mb-2">
                             @if ($item['discount'] && $item['finalPrice'] !== null)

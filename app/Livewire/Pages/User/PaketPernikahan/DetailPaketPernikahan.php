@@ -15,7 +15,7 @@ class DetailPaketPernikahan extends Component
 
     public function mount($slug)
     {
-        $this->paket = PaketPernikahan::where('slug', $slug)->first();
+        $this->paket = PaketPernikahan::with(['imagePaketPernikahans', 'sewaBajus'])->where('slug', $slug)->first();
 
         // Filter data akad dan resepsi dari koleksi hasil query
         $this->bajusAkad = $this->paket->sewaBajus->where('category', 'Kebaya Akad');
